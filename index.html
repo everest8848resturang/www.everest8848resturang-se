@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EVEREST 8848</title>
+  <style>
+    :root {
+      --cream: #FFFEF7;
+      --gold: #D4AF37;
+      --gold-hover: #C4A030;
+      --ink: #1A1A1A;
+      --panel: #F8F7F2;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .h-serif {
+      font-family: ui-serif, Georgia, serif;
+    }
+    
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(255, 254, 247, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+      padding: 1rem 0;
+    }
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .brand-logo {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+    .lang {
+      background: var(--gold);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .lang:hover {
+      background: var(--gold-hover);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,0.8));
+    }
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 1.5rem;
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+    .kicker {
+      color: var(--gold);
+      font-size: 0.875rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: white;
+      margin-bottom: 1rem;
+      letter-spacing: 0.05em;
+    }
+    .hero .sub {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.875rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .hero p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 300;
+      max-width: 42rem;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 1.5rem 2.5rem;
+      text-decoration: none;
+      font-size: 0.875rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      border-radius: 4px;
+      transition: all 0.3s;
+    }
+    .btn.gold {
+      background: var(--gold);
+      color: var(--ink);
+    }
+    .btn.gold:hover {
+      background: var(--gold-hover);
+    }
+    .btn.dark {
+      background: var(--ink);
+      color: white;
+    }
+    .btn.dark:hover {
+      background: #333;
+    }
+    .chevron-down {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.5);
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* Sections */
+    .section {
+      padding: 6rem 1.5rem;
+    }
+    .section.dark {
+      background: var(--ink);
+      color: white;
+    }
+    .section.panel {
+      background: var(--panel);
+    }
+    .container {
+      max-width: 80rem;
+      margin: 0 auto;
+    }
+
+    /* About Section */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .about-image-wrapper {
+      position: relative;
+    }
+    .about-image {
+      aspect-ratio: 4/5;
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .about-badge {
+      position: absolute;
+      bottom: -2rem;
+      left: -2rem;
+      background: var(--gold);
+      color: var(--ink);
+      padding: 2rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    .about-badge .number {
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    .about-badge .label {
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+    .stars {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 2rem;
+      color: var(--gold);
+    }
+    .stars span {
+      margin-left: 0.75rem;
+      color: rgba(26, 26, 26, 0.6);
+      font-size: 0.875rem;
+    }
+    .muted-ink {
+      color: rgba(26, 26, 26, 0.7);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Features Section */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 768px) {
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .feature {
+      text-align: center;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      transition: border-color 0.5s;
+    }
+    .feature:hover {
+      border-color: rgba(212, 175, 55, 0.5);
+    }
+    .feature .icon-circle {
+      width: 4rem;
+      height: 4rem;
+      margin: 0 auto 1.5rem;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+    .feature h3 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: white;
+    }
+    .feature .muted {
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.8;
+    }
+
+    /* Signature Dishes */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    @media (min-width: 640px) {
+      .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.5s, transform 0.5s;
+    }
+    .card:hover {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .card img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      transition: transform 0.7s;
+    }
+    .card:hover img {
+      transform: scale(1.1);
+    }
+    .card-content {
+      padding: 1.5rem;
+    }
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .card-desc {
+      color: rgba(26, 26, 26, 0.6);
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-price {
+      color: var(--gold);
+      font-size: 1.125rem;
+    }
+
+            /* Footer Styles */
+        .footer {
+            background: #1A1A1A;
+            color: white;
+        }
+
+        .footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand {
+            grid-column: span 1;
+        }
+
+        .footer-logo {
+            height: 5rem;
+            width: auto;
+            margin-bottom: 1rem;
+        }
+
+        .footer-tagline {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        .footer-section h4 {
+            font-size: 0.875rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #D4AF37;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #D4AF37;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.875rem;
+        }
+
+        .footer-contact-item i {
+            color: #D4AF37;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .footer-hours {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.875rem;
+        }
+
+        .footer-hours i {
+            color: #D4AF37;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .footer-hours-text p {
+            line-height: 1.6;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .footer-copyright {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.875rem;
+        }
+
+        .footer-social {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .footer-social-link {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-social-link:hover {
+            border-color: #D4AF37;
+            color: #D4AF37;
+        }
+
+    /* Text utilities */
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin: 1rem 0;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .section-desc {
+      color: rgba(26, 26, 26, 0.6);
+      margin-top: 1rem;
+      max-width: 45rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <img src="bild.jpg" alt="Everest 8848 Logo" class="brand-logo">
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="menu.html" data-i18n="nav.menu">Menu</a>
+        <a href="gallery.html" data-i18n="nav.gallery">Gallery</a>
+        <a href="booking.html" data-i18n="nav.booking">Booking</a>
+        <a href="contact.html" data-i18n="nav.contact">Contact</a>
+      </nav>
+
+      <button class="lang" id="langBtn" type="button" aria-label="Language">
+        <span>SV</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+
+      <div class="hero-content">
+        <span class="kicker" data-i18n="home.welcome">Welcome to</span>
+        <h1 class="h-serif">EVEREST 8848</h1>
+        <div class="sub" data-i18n="home.restaurantBar">Restaurant & Bar</div>
+        <p data-i18n="home.heroText">Experience authentic Nepalese and Indian cuisine in the heart of Stockholm</p>
+
+        <div class="hero-actions">
+          <a class="btn gold" href="booking.html" data-i18n="home.bookTable">Book a Table</a>
+          <a class="btn gold" href="menu.html" data-i18n="home.viewMenu">View Menu</a>
+        </div>
+      </div>
+
+      <svg class="chevron-down" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </section>
+
+    <!-- About Section -->
+    <section class="section">
+      <div class="container">
+        <div class="grid-2">
+          <div>
+            <span class="kicker" data-i18n="home.ourStory">Our Story</span>
+            <h2 class="h-serif" data-i18n="home.storyTitle">A Journey of Flavors from the Himalayas</h2>
+            <p class="muted-ink" data-i18n="home.storyText1">At Everest 8848, we bring the authentic taste of Nepal and India to Stockholm. Our chefs use traditional recipes passed down through generations.</p>
+            <p class="muted-ink" data-i18n="home.storyText2">Every dish is prepared with fresh ingredients and spices imported directly from the Himalayan region, ensuring an authentic dining experience.</p>
+            <div class="stars">
+              ★★★★★
+              <span data-i18n="home.excellentRating">Excellent rating on TripAdvisor</span>
+            </div>
+          </div>
+
+          <div class="about-image-wrapper">
+            <div class="about-image">
+              <img loading="lazy" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800" alt="Restaurant interior">
+            </div>
+            <div class="about-badge">
+              <p class="number h-serif">1+</p>
+              <p class="label" data-i18n="home.yearsExperience">Years Experience</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section dark">
+      <div class="container">
+        <div class="section-header">
+          <span class="kicker" data-i18n="home.whyChooseUs">Why Choose Us</span>
+          <h2 class="h-serif" data-i18n="home.exceptionalExperience">An Exceptional Experience</h2>
+        </div>
+
+        <div class="grid-3">
+          <div class="feature">
+            <div class="icon-circle">🍽</div>
+            <h3 class="h-serif" data-i18n="home.authenticFlavors">Authentic Flavors</h3>
+            <p class="muted" data-i18n="home.authenticFlavorsDesc">Traditional recipes from Asia and Europe, prepared with imported spices and fresh ingredients</p>
+          </div>
+          <div class="feature">
+            <div class="icon-circle">🍷</div>
+            <h3 class="h-serif" data-i18n="home.exclusiveBar">Exclusive Bar</h3>
+            <p class="muted" data-i18n="home.exclusiveBarDesc">Carefully curated selection of wines, cocktails, and spirits to complement your meal</p>
+          </div>
+          <div class="feature">
+            <div class="icon-circle">👥</div>
+            <h3 class="h-serif" data-i18n="home.warmAtmosphere">Warm Atmosphere</h3>
+            <p class="muted" data-i18n="home.warmAtmosphereDesc">Welcoming ambiance inspired by Himalayan hospitality, perfect for any occasion</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section">
+      <div class="container text-center">
+        <h2 class="h-serif" data-i18n="home.reserveToday">Reserve Your Table Today</h2>
+        <p class="section-desc" data-i18n="home.reserveText">Join us for an unforgettable dining experience. Book your table now and discover the authentic flavors of the Himalayas.</p>
+        <a class="btn dark" href="booking.html" data-i18n="home.bookNow">Book Now</a>
+      </div>
+    </section>
+
+    <!-- Signature Dishes Section -->
+    <section class="section panel">
+      <div class="container">
+        <div class="section-header">
+          <span class="kicker" data-i18n="home.ourFavorites">Our Favorites</span>
+          <h2 class="h-serif" data-i18n="home.signatureDishes">Signature Dishes</h2>
+          <p class="section-desc" data-i18n="home.signatureText">Discover our most beloved dishes, crafted with passion and authentic Himalayan flavors</p>
+        </div>
+
+        <div class="grid-4">
+          <div class="card">
+            <img loading="lazy" src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/b86cc1bb1_WhatsAppImage2025-12-02at14751AM2.jpg" alt="Momo">
+            <div class="card-content">
+              <h3 class="h-serif card-title">Momo</h3>
+              <p class="card-desc" data-i18n="home.momoDesc">Traditional Nepalese dumplings</p>
+              <p class="card-price h-serif"><span data-i18n="home.from">from</span> 189 kr</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <img loading="lazy" src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/eb013bc7a_WhatsAppImage2025-12-02at15303AM.jpg" alt="E8 Thali">
+            <div class="card-content">
+              <h3 class="h-serif card-title">E8 Thali</h3>
+              <p class="card-desc" data-i18n="home.thaliDesc">Complete traditional meal platter</p>
+              <p class="card-price h-serif"><span data-i18n="home.from">from</span> 249 kr</p>
+            </div>
+          </div>
+          
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- Brand -->
+                <div class="footer-brand">
+                    <img 
+                        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" 
+                        alt="Everest 8848 Logo"
+                        class="footer-logo"
+                    />
+                    <p class="footer-tagline">
+                        Authentic Nepalese and Indian cuisine in the heart of Stockholm
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="index.html">Home</a>
+                        <a href="menu.html">Menu</a>
+                        <a href="gallery.html">Gallery</a>
+                        <a href="booking.html">Booking</a>
+                        <a href="contact.html">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <div class="footer-contact-item">
+                        <i data-lucide="map-pin" style="width: 16px; height: 16px;"></i>
+                        <span>Olofsgatan 7A, 111 36 Stockholm</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="phone" style="width: 16px; height: 16px;"></i>
+                        <span>08-123 45 67</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i data-lucide="mail" style="width: 16px; height: 16px;"></i>
+                        <span>everest8848e@gmail.com</span>
+                    </div>
+                </div>
+
+                <!-- Opening Hours -->
+                <div class="footer-section">
+                    <h4>Opening Hours</h4>
+                    <div class="footer-hours">
+                        <i data-lucide="clock" style="width: 16px; height: 16px;"></i>
+                        <div class="footer-hours-text">
+                            <p>Mon-Thu: 11:00 - 22:00</p>
+                            <p>Fri-Sat: 11:00 - 23:00</p>
+                            <p>Sunday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social & Copyright -->
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    © 2024 Everest 8848 Restaurant & Bar. All rights reserved.
+                </p>
+                <div class="footer-social">
+                    <a 
+                        href="https://www.instagram.com/everest_8848e/" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="footer-social-link"
+                    >
+                        <i data-lucide="instagram" style="width: 18px; height: 18px;"></i>
+                    </a>
+                    <a 
+                        href="https://facebook.com" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="footer-social-link"
+                    >
+                        <i data-lucide="facebook" style="width: 18px; height: 18px;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

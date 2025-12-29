@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Book a Table — Everest 8848</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="container header">
+    <a class="brand" href="index.html">
+      <div class="logo-placeholder">8848</div>
+      <div>
+        <div style="font-weight:800">Everest 8848</div>
+        <div style="font-size:13px;color:var(--muted)">Authentic Nepalese Cuisine in Sweden</div>
+      </div>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="menu.html">Our Menu</a>
+      <a class="active" href="book.html">Book a Table</a>
+      <a href="contact.html">Contact Us</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Book a Table</h2>
+      <p class="muted">
+        Reserve your table online at Everest 8848. Please fill out the form below and we will confirm your booking. For urgent requests, call us at +46 72 777 8653.
+      </p>
+
+      <form style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
+        <input placeholder="Your Name" style="padding:10px;border-radius:8px;border:1px solid #e6e6e6" required />
+        <input placeholder="Phone or Email" style="padding:10px;border-radius:8px;border:1px solid #e6e6e6" required />
+        <input type="date" style="padding:10px;border-radius:8px;border:1px solid #e6e6e6" required />
+        <select style="padding:10px;border-radius:8px;border:1px solid #e6e6e6">
+          <option>2 people</option>
+          <option>4 people</option>
+          <option>6 people</option>
+          <option>8 people</option>
+        </select>
+        <button style="padding:10px;border-radius:8px;border:0;background:var(--primary-color);color:#fff;font-weight:700">
+          Request Reservation
+        </button>
+      </form>
+
+      <p class="muted" style="margin-top:10px;">
+        Note: This is a static example form. To accept bookings, you will need a server-side form handler or service like Formspree, Google Forms, or a booking plugin.
+      </p>
+    </section>
+
+    <footer class="footer">
+      © 2025 Everest 8848 — Stockholm, Sweden
+    </footer>
+  </main>
+</body>
+</html>

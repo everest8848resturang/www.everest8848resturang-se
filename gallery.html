@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gallery • EVEREST 8848</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --cream: #FFFEF7;
+      --gold: #D4AF37;
+      --gold-hover: #C4A030;
+      --ink: #1A1A1A;
+      --panel: #F8F7F2;
+      --white: #FFFFFF;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    .h-serif { font-family: ui-serif, Georgia, serif; }
+    
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255, 254, 247, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+      padding: 1rem 0;
+    }
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+    .brand-logo { width: 48px; height: 48px; object-fit: contain; }
+
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { text-decoration: none; color: var(--ink); font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--gold); }
+    .lang { background: var(--gold); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+
+    /* Hero Section */
+    .hero { padding: 6rem 1.5rem 4rem; background: var(--ink); margin-top: 60px; text-align: center; color: var(--white); }
+    .kicker { color: var(--gold); font-size: 0.8rem; letter-spacing: 0.4em; text-transform: uppercase; display: block; margin-bottom: 1rem; }
+    .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1rem; }
+    .hero p { color: rgba(255, 255, 255, 0.6); max-width: 600px; margin: 0 auto; }
+
+    /* Filters */
+    .filter-section { padding: 2rem 1.5rem; }
+    .filter-container { max-width: 72rem; margin: 0 auto; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .filter-btn { padding: 0.75rem 1.5rem; border-radius: 9999px; cursor: pointer; transition: 0.3s; background: transparent; color: rgba(26, 26, 26, 0.6); border: 1px solid rgba(26, 26, 26, 0.2); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; }
+    .filter-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
+
+    /* Gallery Grid */
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    .gallery-item { aspect-ratio: 1; border-radius: 0.75rem; overflow: hidden; position: relative; cursor: pointer; animation: fadeIn 0.5s ease-out forwards; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+    .gallery-item:hover img { transform: scale(1.1); }
+    .gallery-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); transition: 0.3s; display: flex; align-items: flex-end; padding: 1.5rem; }
+    .gallery-item:hover .gallery-overlay { background: rgba(0,0,0,0.5); }
+    .gallery-title { color: white; opacity: 0; transition: 0.3s; transform: translateY(10px); }
+    .gallery-item:hover .gallery-title { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Lightbox */
+    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; display: none; align-items: center; justify-content: center; padding: 2rem; cursor: zoom-out; }
+    .lightbox.active { display: flex; }
+    .lightbox-image { max-width: 90%; max-height: 80vh; border-radius: 4px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+    .lightbox-close { position: absolute; top: 2rem; right: 2rem; color: white; background: none; border: none; cursor: pointer; }
+
+    /* Footer */
+    .footer { background: var(--ink); color: white; padding: 4rem 1.5rem 2rem; margin-top: 4rem; }
+    .footer-container { max-width: 1200px; margin: 0 auto; }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 3rem; }
+    .footer-logo { width: 100px; margin-bottom: 1rem; }
+    .footer-section h4 { color: var(--gold); text-transform: uppercase; font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .footer-contact-item { display: flex; gap: 12px; margin-bottom: 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+    .footer-bottom { padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-social { display: flex; gap: 1rem; }
+    .footer-social-link { width: 36px; height: 36px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; transition: 0.3s; }
+    .footer-social-link:hover { background: var(--gold); }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="brand-logo">
+        <div>
+          <div style="font-weight:800; letter-spacing:.12em;">EVEREST 8848</div>
+          <div style="font-size:10px; color:rgba(26,26,26,0.5); text-transform:uppercase;">Restaurant & Bar</div>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="booking.html">Booking</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <button class="lang">SV</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="kicker">Experience</span>
+      <h1 class="h-serif">Galleri</h1>
+      <p>Bilder från vår restaurang och våra rätter</p>
+    </section>
+
+    <section class="filter-section">
+      <div class="filter-container">
+        <button class="filter-btn active" data-filter="all">Alla</button>
+        <button class="filter-btn" data-filter="food">Mat</button>
+        <button class="filter-btn" data-filter="ambiance">Atmosfär</button>
+      </div>
+    </section>
+
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </main>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose"><i data-lucide="x" size="32"></i></button>
+    <img class="lightbox-image" id="lightboxImage">
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="footer-logo" />
+                <p style="color:rgba(255,255,255,0.6); font-size:0.9rem;">Authentic Nepalese and Indian cuisine in the heart of Stockholm</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <div style="display:flex; flex-direction:column; gap:0.8rem;">
+                    <a href="index.html" style="color:rgba(255,255,255,0.7); text-decoration:none;">Home</a>
+                    <a href="menu.html" style="color:rgba(255,255,255,0.7); text-decoration:none;">Menu</a>
+                    <a href="booking.html" style="color:rgba(255,255,255,0.7); text-decoration:none;">Booking</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <div class="footer-contact-item"><i data-lucide="map-pin" size="16"></i><span>Olofsgatan 7A, 111 36 Stockholm</span></div>
+                <div class="footer-contact-item"><i data-lucide="phone" size="16"></i><span>08-123 45 67</span></div>
+            </div>
+            <div class="footer-section">
+                <h4>Opening Hours</h4>
+                <div class="footer-contact-item">
+                    <i data-lucide="clock" size="16"></i>
+                    <div>
+                        <p>Mon-Thu: 11:00 - 22:00</p>
+                        <p>Fri-Sat: 11:00 - 23:00</p>
+                        <p>Sunday: Closed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© <span id="year"></span> Everest 8848. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="#" class="footer-social-link"><i data-lucide="instagram" size="18"></i></a>
+                <a href="#" class="footer-social-link"><i data-lucide="facebook" size="18"></i></a>
+            </div>
+        </div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const IMAGES = [
+      { src: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/b86cc1bb1_WhatsAppImage2025-12-02at14751AM2.jpg', title: 'Momo', category: 'food' },
+      { src: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/67338a87e_WhatsAppImage2025-12-02at15303AM1.jpg', title: 'Chowmein', category: 'food' },
+      { src: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/eb013bc7a_WhatsAppImage2025-12-02at15303AM.jpg', title: 'E8 Thali', category: 'food' },
+      { src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800', title: 'Interior', category: 'ambiance' },
+      { src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800', title: 'Dining', category: 'ambiance' }
+    ];
+
+    let filter = 'all';
+
+    function render() {
+      const grid = document.getElementById('galleryGrid');
+      grid.innerHTML = IMAGES.filter(img => filter === 'all' || img.category === filter).map(img => `
+        <div class="gallery-item" onclick="openLightbox('${img.src}')">
+          <img src="${img.src}" alt="${img.title}">
+          <div class="gallery-overlay"><p class="gallery-title h-serif">${img.title}</p></div>
+        </div>
+      `).join('');
+    }
+
+    function openLightbox(src) {
+      document.getElementById('lightboxImage').src = src;
+      document.getElementById('lightbox').classList.add('active');
+    }
+
+    document.getElementById('lightboxClose').onclick = () => document.getElementById('lightbox').classList.remove('active');
+    document.getElementById('lightbox').onclick = (e) => { if(e.target.id === 'lightbox') e.target.classList.remove('active'); }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filter = btn.dataset.filter;
+        render();
+      };
+    });
+
+    render();
+  </script>
+</body>
+</html>

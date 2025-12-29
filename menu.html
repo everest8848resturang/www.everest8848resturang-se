@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Menu • EVEREST 8848</title>
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --cream: #FFFEF7;
+      --gold: #D4AF37;
+      --gold-hover: #C4A030;
+      --ink: #1A1A1A;
+      --panel: #F8F7F2;
+      --white: #FFFFFF;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .h-serif {
+      font-family: ui-serif, Georgia, serif;
+    }
+
+    /* --- Navigation --- */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255, 254, 247, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+      padding: 0.75rem 0;
+    }
+
+    .nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    .lang {
+      background: var(--gold);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    /* --- Hero --- */
+    .hero {
+      padding: 6rem 1.5rem 4rem;
+      background: var(--ink);
+      margin-top: 60px;
+      text-align: center;
+      color: var(--white);
+    }
+
+    .kicker {
+      color: var(--gold);
+      font-size: 0.8rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* --- Sticky Menu Tabs --- */
+    .tabs-section {
+      position: sticky;
+      top: 65px;
+      z-index: 90;
+      background: var(--cream);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .tabs-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      overflow-x: auto;
+      padding: 1rem 1.5rem;
+      gap: 0.5rem;
+      scrollbar-width: none;
+    }
+
+    .tabs-inner::-webkit-scrollbar { display: none; }
+
+    .tab {
+      padding: 0.6rem 1.2rem;
+      border-radius: 20px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background: var(--white);
+      white-space: nowrap;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+    }
+
+    .tab.active {
+      background: var(--ink);
+      color: var(--white);
+      border-color: var(--ink);
+    }
+
+    /* --- Menu Cards --- */
+    .menu-section {
+      padding: 3rem 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .menu-card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(0,0,0,0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      transition: transform 0.2s;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    .item-info h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .item-desc {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .item-price {
+      font-weight: 700;
+      color: var(--gold);
+      font-size: 1.2rem;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 5px;
+      vertical-align: middle;
+      text-transform: uppercase;
+    }
+    .badge-veg { background: #e6f4ea; color: #1e7e34; }
+    .badge-popular { background: #fff4e5; color: #b7791f; }
+    .badge-spicy { background: #fff5f5; color: #c53030; }
+
+    /* --- Footer --- */
+    .footer {
+      background: var(--ink);
+      color: var(--white);
+      padding: 4rem 1.5rem 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-container { max-width: 1200px; margin: 0 auto; }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .footer-logo { width: 100px; margin-bottom: 1rem; }
+    .footer-tagline { color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    
+    .footer-section h4 {
+      color: var(--gold);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      display: block;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      margin-bottom: 0.8rem;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-contact-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 1rem;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+    }
+
+    .footer-bottom {
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-social { display: flex; gap: 1rem; }
+    .footer-social-link {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; color: white; transition: 0.3s;
+    }
+    .footer-social-link:hover { background: var(--gold); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .footer-grid { text-align: center; }
+      .footer-contact-item { justify-content: center; }
+      .footer-bottom { justify-content: center; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="brand-logo">
+        <div>
+          <div style="font-weight:800; letter-spacing:.1em; font-size: 1.1rem;">EVEREST 8848</div>
+          <div style="font-size:9px; color:rgba(26,26,26,.5); text-transform:uppercase; letter-spacing: 0.1em;">Restaurant & Bar</div>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Hem</a>
+        <a href="menu.html" style="color: var(--gold);">Meny</a>
+        <a href="gallery.html">Galleri</a>
+        <a href="booking.html">Boka Bord</a>
+        <a href="contact.html">Kontakt</a>
+      </nav>
+      <button class="lang">SV</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="kicker">Välkommen</span>
+      <h1 class="h-serif">Vår Meny</h1>
+      <p>Upplev autentiska smaker från Nepal och Indien, tillagade med traditionella tekniker och de finaste råvarorna.</p>
+    </section>
+
+    <nav class="tabs-section">
+      <div class="tabs-inner" id="tabs-container">
+        </div>
+    </nav>
+
+    <section class="menu-section" id="menu-list">
+      </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="footer-logo">
+          <p class="footer-tagline">Autentiskt nepalesiskt och indiskt kök i hjärtat av Stockholm.</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Snabblänkar</h4>
+          <div class="footer-links">
+            <a href="index.html">Hem</a>
+            <a href="menu.html">Meny</a>
+            <a href="booking.html">Boka Bord</a>
+            <a href="contact.html">Kontakt</a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Kontakt</h4>
+          <div class="footer-contact-item">
+            <i data-lucide="map-pin" size="18"></i>
+            <span>Olofsgatan 7A, 111 36 Stockholm</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="phone" size="18"></i>
+            <span>08-123 45 67</span>
+          </div>
+          <div class="footer-contact-item">
+            <i data-lucide="mail" size="18"></i>
+            <span>everest8848e@gmail.com</span>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Öppettider</h4>
+          <div class="footer-contact-item">
+            <i data-lucide="clock" size="18"></i>
+            <div>
+              <p>Mån-Tor: 11:00 - 22:00</p>
+              <p>Fre-Lör: 11:00 - 23:00</p>
+              <p>Söndag: Stängt</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© <span id="year"></span> Everest 8848. All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" class="footer-social-link"><i data-lucide="instagram" size="18"></i></a>
+          <a href="#" class="footer-social-link"><i data-lucide="facebook" size="18"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // The Menu Data
+    const MENU_DATA = {
+      "förrätter-veg": [
+        { name: "Chili Cheese", desc: "Friterade jalapeño- och ostbollar (5st).", price: "59", veg: true },
+        { name: "Halloumi-nuggets", desc: "Krispigt friterade bitar av halloumi (5st).", price: "89", veg: true },
+        { name: "Paneer Pakora", desc: "Indisk ost doppad i kryddig frityrsmet.", price: "89", veg: true },
+        { name: "Friterad Blomkål", desc: "Panerade i ägg och grovt ströbröd.", price: "60", veg: true }
+      ],
+      "förrätter-nonveg": [
+        { name: "King Prawn", desc: "Marinerad i lime, vitlök & peppar, friterad (4st).", price: "100" },
+        { name: "Kycklingvingar Bacon", desc: "Marinerade vingar täckta med bacon.", price: "89" },
+        { name: "Kycklingnuggets", desc: "Klassiska krispiga nuggets (5st).", price: "69" }
+      ],
+      "thali": [
+        { name: "Everest Special Thali", desc: "Basmatiris, linser, lamm, kyckling, prawn, raita & papadum.", price: "319", popular: true },
+        { name: "Thakali Thali", desc: "Lamm, ris, linser, grönsaker, raita & papadum.", price: "279" },
+        { name: "Signatur Veg Thali", desc: "Spenat, ost, ris, linser, pickel & yoghurt.", price: "249", veg: true }
+      ],
+      "momo": [
+        { name: "Kyckling Momo", desc: "Ångade dumplings med kyckling och chutney.", price: "199", popular: true },
+        { name: "Vegetarisk Momo", desc: "Dumplings med paneer, lök och ingefära.", price: "189", veg: true },
+        { name: "Jhol Momo", desc: "Serveras i varm kryddig sesambuljong.", price: "209", spicy: true }
+      ],
+      "schnitzel": [
+        { name: "Everest Special Schnitzel", desc: "Mix av panerad ost och fläskschnitzel.", price: "249", popular: true },
+        { name: "Royal Schnitzel", desc: "Fläskschnitzel med skinka och ost.", price: "279" },
+        { name: "Panerad Rödspetta", desc: "Friterad med smör, serveras med potatis.", price: "179" }
+      ],
+      "drycker": [
+        { name: "Läsk", desc: "Cola, Fanta, Sprite, Ramlösa.", price: "35" }
+      ]
+    };
+
+    const categories = [
+      { id: "förrätter-veg", label: "Förrätter (Veg)" },
+      { id: "förrätter-nonveg", label: "Förrätter (Kött)" },
+      { id: "thali", label: "Thali" },
+      { id: "momo", label: "Momo" },
+      { id: "schnitzel", label: "Schnitzel" },
+      { id: "drycker", label: "Drycker" }
+    ];
+
+    let currentCat = "förrätter-veg";
+
+    function initMenu() {
+      const tabContainer = document.getElementById('tabs-container');
+      
+      // Render Tabs
+      tabContainer.innerHTML = categories.map(cat => `
+        <button class="tab ${cat.id === currentCat ? 'active' : ''}" onclick="switchCategory('${cat.id}')">
+          ${cat.label}
+        </button>
+      `).join('');
+
+      // Render Items
+      const listContainer = document.getElementById('menu-list');
+      const items = MENU_DATA[currentCat];
+      
+      listContainer.innerHTML = items.map(item => `
+        <div class="menu-card">
+          <div class="item-info">
+            <h3>
+              ${item.name}
+              ${item.veg ? '<span class="badge badge-veg">Veg</span>' : ''}
+              ${item.popular ? '<span class="badge badge-popular">Populär</span>' : ''}
+              ${item.spicy ? '<span class="badge badge-spicy">Stark</span>' : ''}
+            </h3>
+            <p class="item-desc">${item.desc}</p>
+          </div>
+          <div class="item-price">${item.price} kr</div>
+        </div>
+      `).join('');
+    }
+
+    function switchCategory(id) {
+      currentCat = id;
+      initMenu();
+      // Smooth scroll back to top of menu
+      window.scrollTo({ top: document.querySelector('.tabs-section').offsetTop - 70, behavior: 'smooth' });
+    }
+
+    // Load initial
+    initMenu();
+  </script>
+</body>
+</html>
