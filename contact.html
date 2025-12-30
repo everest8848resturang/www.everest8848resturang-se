@@ -1,900 +1,331 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Everest 8848</title>
+    <title>Kontakt | EVEREST 8848</title>
     
-    <!-- Leaflet CSS for map -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --gold: #c5a059;
+            --gold-light: #e2c28d;
+            --black: #0a0a0a;
+            --near-black: #121212;
+            --white: #ffffff;
+            --gray: #a0a0a0;
+            --cream: #FFFEF7;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: #FFFEF7;
-            color: #1A1A1A;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--black);
             line-height: 1.6;
         }
 
-        .font-serif {
-            font-family: Georgia, 'Times New Roman', serif;
-        }
+        .h-serif { font-family: 'Cormorant Garamond', serif; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        /* Hero Section */
-        .hero {
-            background-color: #1A1A1A;
-            padding: 8rem 1.5rem 5rem;
-            text-align: center;
-            margin-top: 72px;
-        }
-
-        .hero-content {
-            max-width: 56rem;
-            margin: 0 auto;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .hero-subtitle {
-            color: #D4AF37;
-            font-size: 0.875rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-        }
-
-        .hero-title {
-            font-size: 3.75rem;
-            color: white;
-            margin: 1rem 0 1.5rem;
-        }
-
-        .hero-text {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1.125rem;
-            max-width: 42rem;
-            margin: 0 auto;
-        }
-
-        /* Contact Info Cards */
-        .contact-cards {
-            padding: 4rem 1.5rem;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: -5rem;
-            position: relative;
-            z-index: 10;
-        }
-
-        .info-card {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(26, 26, 26, 0.05);
-            text-align: center;
-            animation: fadeInUp 0.5s ease-out forwards;
-            opacity: 0;
-        }
-
-        .info-card:nth-child(1) { animation-delay: 0.1s; }
-        .info-card:nth-child(2) { animation-delay: 0.2s; }
-        .info-card:nth-child(3) { animation-delay: 0.3s; }
-        .info-card:nth-child(4) { animation-delay: 0.4s; }
-
-        .card-icon {
-            width: 3rem;
-            height: 3rem;
-            margin: 0 auto 1rem;
-            border-radius: 50%;
-            background-color: rgba(212, 175, 55, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #D4AF37;
-        }
-
-        .card-title {
-            font-size: 0.875rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: rgba(26, 26, 26, 0.5);
-            margin-bottom: 0.5rem;
-        }
-
-        .card-info {
-            font-size: 1.125rem;
-            color: #1A1A1A;
-        }
-
-        .card-sub {
-            font-size: 0.875rem;
-            color: rgba(26, 26, 26, 0.6);
-            margin-top: 0.25rem;
-        }
-
-        /* Map & Form Section */
-        .map-form-section {
-            padding: 4rem 1.5rem;
-        }
-
-        .map-form-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-        }
-
-        @media (min-width: 1024px) {
-            .map-form-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .map-container {
-            height: 400px;
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-
-        @media (min-width: 1024px) {
-            .map-container {
-                height: 100%;
-                min-height: 400px;
-            }
-        }
-
-        /* Form Styles */
-        .form-container {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 2rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(26, 26, 26, 0.05);
-        }
-
-        .form-title {
-            font-size: 1.5rem;
-            color: #1A1A1A;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        @media (min-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        label {
-            display: block;
-            font-size: 0.875rem;
-            color: rgba(26, 26, 26, 0.7);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid rgba(26, 26, 26, 0.1);
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #D4AF37;
-        }
-
-        textarea {
-            min-height: 150px;
-            resize: none;
-        }
-
-        button {
-            width: 100%;
-            padding: 1rem;
-            background-color: #D4AF37;
-            color: black;
-            border: none;
-            border-radius: 0.75rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        button:hover {
-            background-color: #C4A030;
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* Success Message */
-        .success-message {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 4rem 2rem;
-        }
-
-        .success-icon {
-            width: 5rem;
-            height: 5rem;
-            margin: 0 auto 1.5rem;
-            border-radius: 50%;
-            background-color: rgba(34, 197, 94, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #22C55E;
-        }
-
-        .success-title {
-            font-size: 1.5rem;
-            color: #1A1A1A;
-            margin-bottom: 1rem;
-        }
-
-        .success-text {
-            color: rgba(26, 26, 26, 0.6);
-        }
-
-        /* Social Media Section */
-        .social-section {
-            padding: 4rem 1.5rem;
-            background-color: #1A1A1A;
-            text-align: center;
-        }
-
-        .social-content {
-            max-width: 56rem;
-            margin: 0 auto;
-        }
-
-        .social-subtitle {
-            color: #D4AF37;
-            font-size: 0.875rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-        }
-
-        .social-title {
-            font-size: 2.25rem;
-            color: white;
-            margin: 1rem 0 2rem;
-        }
-
-        .social-text {
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 2.5rem;
-            max-width: 36rem;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 2rem;
-            border-radius: 0.75rem;
-            text-decoration: none;
-            font-weight: 500;
-            transition: opacity 0.3s;
-        }
-
-        .social-link:hover {
-            opacity: 0.9;
-        }
-
-        .social-link.instagram {
-            background: linear-gradient(to right, #8B5CF6, #EC4899);
-            color: white;
-        }
-
-        .social-link.facebook {
-            background-color: #1877F2;
-            color: white;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Navigation */
+        /* --- Navigation --- */
         .nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(255, 254, 247, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+            top: 0; width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
             padding: 1rem 0;
         }
 
         .nav-inner {
-            max-width: 1280px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 2rem;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-        }
-
-        .brand {
-            display: flex;
             align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: #1A1A1A;
         }
 
-        .brand-badge {
-            width: 48px;
-            height: 48px;
-            background: #D4AF37;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 18px;
-            border-radius: 8px;
-        }
+        .brand { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--white); }
+        .brand img { width: 50px; height: 50px; }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .brand-logo {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-    }
-
+        .nav-right { display: flex; align-items: center; gap: 2rem; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a {
             text-decoration: none;
-            color: #1A1A1A;
-            font-size: 14px;
+            color: var(--white);
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            transition: color 0.3s;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+        .lang-switch { 
+            display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 1px;
+            border-left: 1px solid rgba(197, 160, 89, 0.3); padding-left: 1.5rem;
+        }
+        .lang-btn { 
+            background: none; border: none; color: var(--white); cursor: pointer; 
+            text-transform: uppercase; opacity: 0.5; transition: 0.3s; padding: 0;
+        }
+        .lang-btn.active { opacity: 1; color: var(--gold); font-weight: 600; }
+        .lang-divider { opacity: 0.3; color: white; }
+
+        /* --- Hero --- */
+        .hero {
+            padding: 12rem 2rem 6rem;
+            background: var(--black);
+            text-align: center;
+            color: var(--white);
+        }
+        .hero-sub { color: var(--gold); text-transform: uppercase; letter-spacing: 4px; font-size: 0.9rem; margin-bottom: 1rem; display: block; }
+        .hero h1 { font-size: clamp(3rem, 6vw, 4.5rem); margin-bottom: 1.5rem; font-weight: 400; }
+        .hero p { color: var(--gray); max-width: 600px; margin: 0 auto; }
+
+        /* --- Contact Info Cards --- */
+        .contact-cards { padding: 0 2rem; margin-top: -3rem; position: relative; z-index: 10; }
+        .cards-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .info-card {
+            background: var(--white);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+        }
+        .card-icon { color: var(--gold); margin-bottom: 1rem; }
+        .card-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--gray); margin-bottom: 0.5rem; }
+        .card-info { font-size: 1.25rem; font-weight: 400; }
+
+        /* --- Map & Form Section --- */
+        .contact-section { padding: 6rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
         }
 
-        .nav-links a:hover {
-            color: #D4AF37;
+        .map-container {
+            height: 100%;
+            min-height: 400px;
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
-        .lang {
-            background: #D4AF37;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
+        .form-card {
+            background: var(--white);
+            padding: 3rem;
+            border: 1px solid rgba(197, 160, 89, 0.2);
         }
 
-        .lang:hover {
-            background: #C4A030;
+        .form-group { margin-bottom: 1.5rem; }
+        label {
+            display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 0.5rem;
         }
+
+        input, textarea {
+            width: 100%; padding: 1rem; border: 1px solid #e0e0e0;
+            background: #fcfcfc; font-family: inherit; transition: 0.3s;
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--gold); background: var(--white); }
+
+        .submit-btn {
+            width: 100%; padding: 1.2rem; background: var(--black); color: var(--white);
+            border: 1px solid var(--black); text-transform: uppercase; letter-spacing: 2px;
+            font-weight: 600; cursor: pointer; transition: 0.3s;
+        }
+        .submit-btn:hover { background: transparent; color: var(--black); }
+
+        /* --- Footer --- */
+        .footer { 
+            background: var(--near-black); color: var(--white); 
+            padding: 6rem 2rem 3rem; border-top: 1px solid rgba(197, 160, 89, 0.1); margin-top: 6rem;
+        }
+        .footer-grid {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 4rem; padding-bottom: 4rem;
+        }
+        .footer-logo { width: 80px; margin-bottom: 1.5rem; }
+        .footer-section h4 { color: var(--gold); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 2rem; }
+        .footer-links a { display: block; color: var(--gray); text-decoration: none; margin-bottom: 1rem; font-size: 0.9rem; transition: 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-contact p { color: var(--gray); font-size: 0.9rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        
+        .footer-bottom { 
+            max-width: 1200px; margin: 0 auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; align-items: center; color: var(--gray); font-size: 0.8rem;
+        }
+        .footer-social { display: flex; gap: 1.5rem; }
+        .footer-social a { color: var(--white); transition: 0.3s; }
+        .footer-social a:hover { color: var(--gold); }
+
+        .hidden { display: none; }
 
         @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .social-title {
-                font-size: 1.875rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .brand-badge {
-                width: 40px;
-                height: 40px;
-                font-size: 16px;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        /* Footer Styles */
-        .footer {
-            background: #1A1A1A;
-            color: white;
-        }
-
-        .footer-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 4rem 1.5rem;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-brand {
-            grid-column: span 1;
-        }
-
-        .footer-logo {
-            height: 5rem;
-            width: auto;
-            margin-bottom: 1rem;
-        }
-
-        .footer-tagline {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.875rem;
-            line-height: 1.6;
-        }
-
-        .footer-section h4 {
-            font-size: 0.875rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: #D4AF37;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            font-size: 0.875rem;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: #D4AF37;
-        }
-
-        .footer-contact-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.875rem;
-        }
-
-        .footer-contact-item i {
-            color: #D4AF37;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .footer-hours {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.875rem;
-        }
-
-        .footer-hours i {
-            color: #D4AF37;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .footer-hours-text p {
-            line-height: 1.6;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1.5rem;
-        }
-
-        .footer-copyright {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.875rem;
-        }
-
-        .footer-social {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .footer-social-link {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .footer-social-link:hover {
-            border-color: #D4AF37;
-            color: #D4AF37;
+            .nav-links { display: none; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center; }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <header class="nav">
+
+    <nav class="nav">
         <div class="nav-inner">
-            <a class="brand" href="index.html">
-               <img src="bild.jpg" alt="Everest 8848 Logo" class="brand-logo">
-                <div>
-                    <div style="font-weight:800; letter-spacing:.12em;">EVEREST 8848</div>
-                    <div style="font-size:12px; color:rgba(26,26,26,.55); letter-spacing:.22em; text-transform:uppercase;">Restaurant & Bar</div>
-                </div>
+            <a href="index.html" class="brand">
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo">
+                <span class="h-serif" style="font-size: 1.4rem; letter-spacing: 2px;">EVEREST 8848</span>
             </a>
-
-            <nav class="nav-links">
-                <a href="index.html" data-i18n="nav.home">Home</a>
-                <a href="menu.html" data-i18n="nav.menu">Menu</a>
-                <a href="gallery.html" data-i18n="nav.gallery">Gallery</a>
-                <a href="booking.html" data-i18n="nav.booking">Booking</a>
-                <a href="contact.html" data-i18n="nav.contact">Contact</a>
-            </nav>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="index.html" data-t="nav-home">Hem</a>
+                    <a href="menu.html" data-t="nav-menu">Meny</a>
+                    <a href="gallery.html" data-t="nav-gallery">Galleri</a>
+                    <a href="booking.html" data-t="nav-booking">Boka Bord</a>
+                    <a href="contact.html" class="active" data-t="nav-contact">Kontakt</a>
+                </div>
+                <div class="lang-switch">
+                    <button onclick="changeLanguage('sv')" class="lang-btn" id="btn-sv">SV</button>
+                    <span class="lang-divider">|</span>
+                    <button onclick="changeLanguage('en')" class="lang-btn" id="btn-en">EN</button>
+                </div>
+            </div>
         </div>
+    </nav>
+
+    <header class="hero">
+        <span class="hero-sub" data-t="contact-kicker">Hitta Hit</span>
+        <h1 class="h-serif" data-t="contact-title">Kontakt</h1>
+        <p data-t="contact-desc">Har du frågor? Tveka inte att höra av dig till oss.</p>
     </header>
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <span class="hero-subtitle">Get In Touch</span>
-            <h1 class="hero-title font-serif">Contact Us</h1>
-            <p class="hero-text">
-                We'd love to hear from you. Whether you have questions about our menu, want to make a reservation, or just want to say hello, we're here to help.
-            </p>
-        </div>
-    </section>
 
-    <!-- Contact Info Cards -->
     <section class="contact-cards">
-        <div class="container">
-            <div class="cards-grid">
-                <div class="info-card">
-                    <div class="card-icon">
-                        <i data-lucide="map-pin"></i>
-                    </div>
-                    <h3 class="card-title">Address</h3>
-                    <p class="card-info font-serif">Olofsgatan 7A</p>
-                    <p class="card-sub">111 36 Stockholm</p>
-                </div>
-
-                <div class="info-card">
-                    <div class="card-icon">
-                        <i data-lucide="phone"></i>
-                    </div>
-                    <h3 class="card-title">Phone</h3>
-                    <p class="card-info font-serif">08-123 45 67</p>
-                    <p class="card-sub">Daily</p>
-                </div>
-
-                <div class="info-card">
-                    <div class="card-icon">
-                        <i data-lucide="mail"></i>
-                    </div>
-                    <h3 class="card-title">Email</h3>
-                    <p class="card-info font-serif">everest8848e@gmail.com</p>
-                    <p class="card-sub">Response within 24h</p>
-                </div>
-
-                <div class="info-card">
-                    <div class="card-icon">
-                        <i data-lucide="clock"></i>
-                    </div>
-                    <h3 class="card-title">Opening Hours</h3>
-                    <p class="card-info font-serif">Mån-Tors 11-22</p>
-                    <p class="card-sub">Fre-Lör 11-23, Sön Stängt</p>
-                </div>
+        <div class="cards-grid">
+            <div class="info-card">
+                <i data-lucide="map-pin" class="card-icon"></i>
+                <h3 class="card-title" data-t="label-address">Adress</h3>
+                <p class="card-info h-serif">Olofsgatan 7A<br>111 36 Stockholm</p>
+            </div>
+            <div class="info-card">
+                <i data-lucide="phone" class="card-icon"></i>
+                <h3 class="card-title" data-t="label-phone">Telefon</h3>
+                <p class="card-info h-serif">08-123 45 67</p>
+            </div>
+            <div class="info-card">
+                <i data-lucide="mail" class="card-icon"></i>
+                <h3 class="card-title" data-t="label-email">E-post</h3>
+                <p class="card-info h-serif">everest8848e@gmail.com</p>
             </div>
         </div>
     </section>
 
-    <!-- Map & Form Section -->
-    <section class="map-form-section">
-        <div class="container">
-            <div class="map-form-grid">
-                <!-- Map -->
-                <div class="map-container" id="map"></div>
+    <main class="contact-section">
+        <div class="contact-grid">
+            <div id="map" class="map-container"></div>
 
-                <!-- Contact Form -->
-                <div id="formContainer">
-                    <div class="form-container">
-                        <h2 class="form-title font-serif">Send Us a Message</h2>
-                        <form id="contactForm">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="name">Name *</label>
-                                    <input type="text" id="name" name="name" required placeholder="Your name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email *</label>
-                                    <input type="email" id="email" name="email" required placeholder="din@email.se">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="subject">Subject</label>
-                                <input type="text" id="subject" name="subject" placeholder="What is this regarding?">
-                            </div>
-                            <div class="form-group">
-                                <label for="message">Message *</label>
-                                <textarea id="message" name="message" required placeholder="Tell us how we can help you..."></textarea>
-                            </div>
-                            <button type="submit" id="submitBtn">
-                                <i data-lucide="send" style="width: 16px; height: 16px;"></i>
-                                <span>Send Message</span>
-                            </button>
-                        </form>
+            <div class="form-card" id="formContainer">
+                <h2 class="h-serif" style="font-size: 2rem; margin-bottom: 2rem;" data-t="form-heading">Skicka Meddelande</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label data-t="form-name">Namn</label>
+                        <input type="text" id="name" required>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label data-t="form-email">E-post</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-t="form-msg">Meddelande</label>
+                        <textarea id="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" data-t="form-submit">Skicka Meddelande</button>
+                </form>
+            </div>
 
-                <!-- Success Message (hidden by default) -->
-                <div id="successMessage" class="hidden">
-                    <div class="form-container success-message">
-                        <div>
-                            <div class="success-icon">
-                                <i data-lucide="check-circle-2" style="width: 40px; height: 40px;"></i>
-                            </div>
-                            <h3 class="success-title font-serif">Message Sent!</h3>
-                            <p class="success-text">
-                                Thank you for contacting us. We'll get back to you as soon as possible.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div id="successView" class="form-card hidden" style="text-align: center;">
+                <i data-lucide="check-circle" style="color: var(--gold); width: 64px; height: 64px; margin-bottom: 1.5rem;"></i>
+                <h2 class="h-serif" style="font-size: 2rem; margin-bottom: 1rem;" data-t="success-title">Tack!</h2>
+                <p data-t="success-desc">Vi har tagit emot ditt meddelande.</p>
+                <button onclick="location.reload()" class="submit-btn" style="margin-top: 2rem;" data-t="btn-back">Tillbaka</button>
             </div>
         </div>
-    </section>
-
-    <!-- Social Media Section -->
-    <section class="social-section">
-        <div class="social-content">
-            <span class="social-subtitle">Follow Us</span>
-            <h2 class="social-title font-serif">On Social Media</h2>
-            <p class="social-text">
-                Stay updated with our latest dishes, special offers, and behind-the-scenes content.
-            </p>
-            <div class="social-links">
-                <a href="https://www.instagram.com/everest_8848e/" target="_blank" rel="noopener noreferrer" class="social-link instagram">
-                    <i data-lucide="instagram" style="width: 24px; height: 24px;"></i>
-                    <span>Instagram</span>
-                </a>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-link facebook">
-                    <i data-lucide="facebook" style="width: 24px; height: 24px;"></i>
-                    <span>Facebook</span>
-                </a>
-            </div>
-        </div>
-    </section>
+    </main>
 
     <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <img 
-                        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" 
-                        alt="Everest 8848 Logo"
-                        class="footer-logo"
-                    />
-                    <p class="footer-tagline">
-                        Authentic Nepalese and Indian cuisine in the heart of Stockholm
-                    </p>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <div class="footer-links">
-                        <a href="index.html">Home</a>
-                        <a href="menu.html">Menu</a>
-                        <a href="gallery.html">Gallery</a>
-                        <a href="booking.html">Booking</a>
-                        <a href="contact.html">Contact</a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <div class="footer-contact-item">
-                        <i data-lucide="map-pin" style="width: 16px; height: 16px;"></i>
-                        <span>Olofsgatan 7A, 111 36 Stockholm</span>
-                    </div>
-                    <div class="footer-contact-item">
-                        <i data-lucide="phone" style="width: 16px; height: 16px;"></i>
-                        <span>08-123 45 67</span>
-                    </div>
-                    <div class="footer-contact-item">
-                        <i data-lucide="mail" style="width: 16px; height: 16px;"></i>
-                        <span>everest8848e@gmail.com</span>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Opening Hours</h4>
-                    <div class="footer-hours">
-                        <i data-lucide="clock" style="width: 16px; height: 16px;"></i>
-                        <div class="footer-hours-text">
-                            <p>Mon-Thu: 11:00 - 22:00</p>
-                            <p>Fri-Sat: 11:00 - 23:00</p>
-                            <p>Sunday: Closed</p>
-                        </div>
-                    </div>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="footer-logo">
+                <p data-t="footer-tag">Autentiskt nepalesiskt och indiskt kök i hjärtat av Stockholm.</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-t="footer-links-h">Snabblänkar</h4>
+                <div class="footer-links">
+                    <a href="index.html" data-t="nav-home">Hem</a>
+                    <a href="menu.html" data-t="nav-menu">Meny</a>
+                    <a href="gallery.html" data-t="nav-gallery">Galleri</a>
+                    <a href="booking.html" data-t="nav-booking">Boka Bord</a>
                 </div>
             </div>
-
-            <div class="footer-bottom">
-                <p class="footer-copyright">
-                    © 2024 Everest 8848 Restaurant & Bar. All rights reserved.
-                </p>
-                <div class="footer-social">
-                    <a 
-                        href="https://www.instagram.com/everest_8848e/" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="footer-social-link"
-                    >
-                        <i data-lucide="instagram" style="width: 18px; height: 18px;"></i>
-                    </a>
-                    <a 
-                        href="https://facebook.com" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="footer-social-link"
-                    >
-                        <i data-lucide="facebook" style="width: 18px; height: 18px;"></i>
-                    </a>
-                </div>
+            <div class="footer-section footer-contact">
+                <h4 data-t="footer-contact-h">Kontakt</h4>
+                <p><i data-lucide="map-pin" size="14"></i> Olofsgatan 7A, Stockholm</p>
+                <p><i data-lucide="phone" size="14"></i> 08-123 45 67</p>
+                <p><i data-lucide="mail" size="14"></i> everest8848@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© <span id="year"></span> Everest 8848. All Rights Reserved.</p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/everest8848resturang/" target="_blank"><i data-lucide="instagram"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61585972942322"><i data-lucide="facebook"></i></a>
             </div>
         </div>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
     <script>
-        // Initialize Lucide icons
+        // Init Lucide
         lucide.createIcons();
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Initialize map
-        const restaurantLocation = [59.3358, 18.0649];
-        const map = L.map('map', {
-            scrollWheelZoom: false
-        }).setView(restaurantLocation, 15);
+        // Language Switch Logic (Same as your booking page)
+        let currentLang = localStorage.getItem('lang') || 'sv';
+        function updateLangUI() {
+            document.getElementById('btn-sv').classList.toggle('active', currentLang === 'sv');
+            document.getElementById('btn-en').classList.toggle('active', currentLang === 'en');
+            // Here you would run your actual translation function using the TRANSLATIONS object
+        }
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            updateLangUI();
+            location.reload(); // Simple reload for this example
+        }
+        updateLangUI();
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+        // Map Init
+        const map = L.map('map', { scrollWheelZoom: false }).setView([59.3358, 18.0649], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        L.marker([59.3358, 18.0649]).addTo(map).bindPopup('<strong>Everest 8848</strong>').openPopup();
 
-        L.marker(restaurantLocation).addTo(map)
-            .bindPopup('<strong>Everest 8848</strong><br>Olofsgatan 7A, 111 36 Stockholm')
-            .openPopup();
-
-        // Form handling
-        const form = document.getElementById('contactForm');
-        const formContainer = document.getElementById('formContainer');
-        const successMessage = document.getElementById('successMessage');
-        const submitBtn = document.getElementById('submitBtn');
-
-        form.addEventListener('submit', async (e) => {
+        // Form Submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            // Disable button and show loading state
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `
-                <i data-lucide="loader-2" class="spinner" style="width: 16px; height: 16px;"></i>
-                <span>Sending...</span>
-            `;
-            lucide.createIcons();
-
-            // Simulate form submission
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // Hide form and show success message
-            formContainer.classList.add('hidden');
-            successMessage.classList.remove('hidden');
-            
-            // Reinitialize icons for success message
-            lucide.createIcons();
+            document.getElementById('formContainer').classList.add('hidden');
+            document.getElementById('successView').classList.remove('hidden');
         });
     </script>
-</body>
-</html>
-
-        
-
 </body>
 </html>

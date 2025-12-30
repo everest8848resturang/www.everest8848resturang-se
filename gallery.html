@@ -1,231 +1,339 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Gallery • EVEREST 8848</title>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    :root {
-      --cream: #FFFEF7;
-      --gold: #D4AF37;
-      --gold-hover: #C4A030;
-      --ink: #1A1A1A;
-      --panel: #F8F7F2;
-      --white: #FFFFFF;
-    }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-    .h-serif { font-family: ui-serif, Georgia, serif; }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Galleri | EVEREST 8848</title>
     
-    /* Navigation */
-    .nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: rgba(255, 254, 247, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(26, 26, 26, 0.1);
-      padding: 1rem 0;
-    }
-    .nav-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
-    .brand-logo { width: 48px; height: 48px; object-fit: contain; }
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap');
 
-    .nav-links { display: flex; gap: 2rem; }
-    .nav-links a { text-decoration: none; color: var(--ink); font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; }
-    .nav-links a:hover { color: var(--gold); }
-    .lang { background: var(--gold); border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        :root {
+            --gold: #c5a059;
+            --gold-light: #e2c28d;
+            --black: #0a0a0a;
+            --near-black: #121212;
+            --white: #ffffff;
+            --gray: #a0a0a0;
+            --cream: #FFFEF7;
+        }
 
-    /* Hero Section */
-    .hero { padding: 6rem 1.5rem 4rem; background: var(--ink); margin-top: 60px; text-align: center; color: var(--white); }
-    .kicker { color: var(--gold); font-size: 0.8rem; letter-spacing: 0.4em; text-transform: uppercase; display: block; margin-bottom: 1rem; }
-    .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1rem; }
-    .hero p { color: rgba(255, 255, 255, 0.6); max-width: 600px; margin: 0 auto; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* Filters */
-    .filter-section { padding: 2rem 1.5rem; }
-    .filter-container { max-width: 72rem; margin: 0 auto; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
-    .filter-btn { padding: 0.75rem 1.5rem; border-radius: 9999px; cursor: pointer; transition: 0.3s; background: transparent; color: rgba(26, 26, 26, 0.6); border: 1px solid rgba(26, 26, 26, 0.2); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; }
-    .filter-btn.active { background: var(--ink); color: white; border-color: var(--ink); }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--black);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
 
-    /* Gallery Grid */
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-    .gallery-item { aspect-ratio: 1; border-radius: 0.75rem; overflow: hidden; position: relative; cursor: pointer; animation: fadeIn 0.5s ease-out forwards; }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
-    .gallery-item:hover img { transform: scale(1.1); }
-    .gallery-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); transition: 0.3s; display: flex; align-items: flex-end; padding: 1.5rem; }
-    .gallery-item:hover .gallery-overlay { background: rgba(0,0,0,0.5); }
-    .gallery-title { color: white; opacity: 0; transition: 0.3s; transform: translateY(10px); }
-    .gallery-item:hover .gallery-title { opacity: 1; transform: translateY(0); }
+        .h-serif { font-family: 'Cormorant Garamond', serif; }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- Navigation --- */
+        .nav {
+            position: fixed;
+            top: 0; width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            padding: 1rem 0;
+        }
 
-    /* Lightbox */
-    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; display: none; align-items: center; justify-content: center; padding: 2rem; cursor: zoom-out; }
-    .lightbox.active { display: flex; }
-    .lightbox-image { max-width: 90%; max-height: 80vh; border-radius: 4px; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
-    .lightbox-close { position: absolute; top: 2rem; right: 2rem; color: white; background: none; border: none; cursor: pointer; }
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    /* Footer */
-    .footer { background: var(--ink); color: white; padding: 4rem 1.5rem 2rem; margin-top: 4rem; }
-    .footer-container { max-width: 1200px; margin: 0 auto; }
-    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 3rem; }
-    .footer-logo { width: 100px; margin-bottom: 1rem; }
-    .footer-section h4 { color: var(--gold); text-transform: uppercase; font-size: 0.9rem; margin-bottom: 1.5rem; }
-    .footer-contact-item { display: flex; gap: 12px; margin-bottom: 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem; }
-    .footer-bottom { padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-social { display: flex; gap: 1rem; }
-    .footer-social-link { width: 36px; height: 36px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; transition: 0.3s; }
-    .footer-social-link:hover { background: var(--gold); }
-  </style>
+        .brand { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--white); }
+        .brand img { width: 50px; height: 50px; }
+
+        .nav-right { display: flex; align-items: center; gap: 2rem; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--white);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+        .lang-switch { 
+            display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 1px;
+            border-left: 1px solid rgba(197, 160, 89, 0.3); padding-left: 1.5rem;
+        }
+        .lang-btn { 
+            background: none; border: none; color: var(--white); cursor: pointer; 
+            text-transform: uppercase; opacity: 0.5; transition: 0.3s; padding: 0;
+        }
+        .lang-btn.active { opacity: 1; color: var(--gold); font-weight: 600; }
+        .lang-divider { opacity: 0.3; color: white; }
+
+        /* --- Hero --- */
+        .hero {
+            padding: 12rem 2rem 6rem;
+            background: var(--black);
+            text-align: center;
+            color: var(--white);
+        }
+        .hero-sub { color: var(--gold); text-transform: uppercase; letter-spacing: 4px; font-size: 0.9rem; margin-bottom: 1rem; display: block; }
+        .hero h1 { font-size: clamp(3rem, 6vw, 4.5rem); margin-bottom: 1.5rem; font-weight: 400; }
+        .hero p { color: var(--gray); max-width: 600px; margin: 0 auto; }
+
+        /* --- Filter Section --- */
+        .filter-section { padding: 4rem 2rem 2rem; text-align: center; }
+        .filter-container { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        .filter-btn {
+            padding: 0.6rem 2rem;
+            border-radius: 40px;
+            border: 1px solid rgba(0,0,0,0.1);
+            background: var(--white);
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .filter-btn.active { background: var(--black); color: var(--white); border-color: var(--black); }
+
+        /* --- Gallery Grid --- */
+        .gallery-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 2rem; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 2rem; 
+        }
+        .gallery-item { 
+            aspect-ratio: 1/1; 
+            border-radius: 4px; 
+            overflow: hidden; 
+            position: relative; 
+            cursor: zoom-in; 
+            background: #eee;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .gallery-item:hover img { transform: scale(1.05); }
+        
+        .gallery-overlay { 
+            position: absolute; inset: 0; 
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%); 
+            opacity: 0; transition: 0.4s; 
+            display: flex; align-items: flex-end; padding: 2rem; 
+        }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-title { color: white; font-size: 1.5rem; }
+
+        /* --- Lightbox --- */
+        .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 2rem; cursor: zoom-out; }
+        .lightbox.active { display: flex; }
+        .lightbox-image { max-width: 90%; max-height: 85vh; border: 2px solid var(--gold); }
+        .lightbox-close { position: absolute; top: 2rem; right: 2rem; color: white; background: none; border: none; cursor: pointer; }
+
+        /* --- Footer --- */
+        .footer { 
+            background: var(--near-black); 
+            color: var(--white); 
+            padding: 6rem 2rem 3rem; 
+            border-top: 1px solid rgba(197, 160, 89, 0.1);
+            margin-top: 6rem;
+        }
+        .footer-grid {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 4rem; padding-bottom: 4rem;
+        }
+        .footer-logo { width: 80px; margin-bottom: 1.5rem; }
+        .footer-section h4 { color: var(--gold); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 2rem; }
+        .footer-links a { display: block; color: var(--gray); text-decoration: none; margin-bottom: 1rem; font-size: 0.9rem; transition: 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-contact p { color: var(--gray); font-size: 0.9rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        
+        .footer-bottom { 
+            max-width: 1200px; margin: 0 auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; align-items: center; color: var(--gray); font-size: 0.8rem;
+        }
+        .footer-social { display: flex; gap: 1.5rem; }
+        .footer-social a { color: var(--white); transition: 0.3s; }
+        .footer-social a:hover { color: var(--gold); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
-  <header class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="index.html">
-        <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="brand-logo">
-        <div>
-          <div style="font-weight:800; letter-spacing:.12em;">EVEREST 8848</div>
-          <div style="font-size:10px; color:rgba(26,26,26,0.5); text-transform:uppercase;">Restaurant & Bar</div>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="brand">
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo">
+                <span class="h-serif" style="font-size: 1.4rem; letter-spacing: 2px;">EVEREST 8848</span>
+            </a>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="index.html" data-t="nav-home">Hem</a>
+                    <a href="menu.html" data-t="nav-menu">Meny</a>
+                    <a href="gallery.html" class="active" data-t="nav-gallery">Galleri</a>
+                    <a href="booking.html" data-t="nav-booking">Boka Bord</a>
+                    <a href="contact.html" data-t="nav-contact">Kontakt</a>
+                </div>
+                <div class="lang-switch">
+                    <button onclick="changeLanguage('sv')" class="lang-btn" id="btn-sv">SV</button>
+                    <span class="lang-divider">|</span>
+                    <button onclick="changeLanguage('en')" class="lang-btn" id="btn-en">EN</button>
+                </div>
+            </div>
         </div>
-      </a>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="menu.html">Menu</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="booking.html">Booking</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-      <button class="lang">SV</button>
-    </div>
-  </header>
+    </nav>
 
-  <main>
-    <section class="hero">
-      <span class="kicker">Experience</span>
-      <h1 class="h-serif">Galleri</h1>
-      <p>Bilder från vår restaurang och våra rätter</p>
-    </section>
+    <header class="hero">
+        <span class="hero-sub" data-t="hero-kicker">Upplev Atmosfären</span>
+        <h1 class="h-serif" data-t="hero-title">Galleri</h1>
+        <p data-t="hero-desc">En inblick i vår passion för matlagning och vår unika restaurangmiljö.</p>
+    </header>
 
     <section class="filter-section">
-      <div class="filter-container">
-        <button class="filter-btn active" data-filter="all">Alla</button>
-        <button class="filter-btn" data-filter="food">Mat</button>
-        <button class="filter-btn" data-filter="ambiance">Atmosfär</button>
-      </div>
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all" data-t="filter-all">Alla</button>
+            <button class="filter-btn" data-filter="food" data-t="filter-food">Mat</button>
+            <button class="filter-btn" data-filter="ambiance" data-t="filter-ambiance">Atmosfär</button>
+        </div>
     </section>
 
-    <div class="gallery-grid" id="galleryGrid"></div>
-  </main>
+    <main class="gallery-grid" id="galleryGrid"></main>
 
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lightboxClose"><i data-lucide="x" size="32"></i></button>
-    <img class="lightbox-image" id="lightboxImage">
-  </div>
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose"><i data-lucide="x" size="40"></i></button>
+        <img class="lightbox-image" id="lightboxImage">
+    </div>
 
-  <footer class="footer">
-    <div class="footer-container">
+    <footer class="footer">
         <div class="footer-grid">
             <div class="footer-brand">
-                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="footer-logo" />
-                <p style="color:rgba(255,255,255,0.6); font-size:0.9rem;">Authentic Nepalese and Indian cuisine in the heart of Stockholm</p>
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="footer-logo">
+                <p data-t="footer-tag">Autentiskt nepalesiskt och indiskt kök i hjärtat av Stockholm.</p>
             </div>
             <div class="footer-section">
-                <h4>Quick Links</h4>
-                <div style="display:flex; flex-direction:column; gap:0.8rem;">
-                    <a href="index.html" style="color:rgba(255,255,255,0.7); text-decoration:none;">Home</a>
-                    <a href="menu.html" style="color:rgba(255,255,255,0.7); text-decoration:none;">Menu</a>
-                    <a href="booking.html" style="color:rgba(255,255,255,0.7); text-decoration:none;">Booking</a>
+                <h4 data-t="footer-links-h">Snabblänkar</h4>
+                <div class="footer-links">
+                    <a href="index.html" data-t="nav-home">Hem</a>
+                    <a href="menu.html" data-t="nav-menu">Meny</a>
+                    <a href="booking.html" data-t="nav-booking">Boka Bord</a>
+                    <a href="contact.html" data-t="nav-contact">Kontakt</a>
                 </div>
             </div>
-            <div class="footer-section">
-                <h4>Contact</h4>
-                <div class="footer-contact-item"><i data-lucide="map-pin" size="16"></i><span>Olofsgatan 7A, 111 36 Stockholm</span></div>
-                <div class="footer-contact-item"><i data-lucide="phone" size="16"></i><span>08-123 45 67</span></div>
-            </div>
-            <div class="footer-section">
-                <h4>Opening Hours</h4>
-                <div class="footer-contact-item">
-                    <i data-lucide="clock" size="16"></i>
-                    <div>
-                        <p>Mon-Thu: 11:00 - 22:00</p>
-                        <p>Fri-Sat: 11:00 - 23:00</p>
-                        <p>Sunday: Closed</p>
-                    </div>
-                </div>
+            <div class="footer-section footer-contact">
+                <h4 data-t="footer-contact-h">Kontakt</h4>
+                <p><i data-lucide="map-pin" size="14"></i> Olofsgatan 7A, Stockholm</p>
+                <p><i data-lucide="phone" size="14"></i> 08-123 45 67</p>
+                <p><i data-lucide="mail" size="14"></i> everest8848@gmail.com</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© <span id="year"></span> Everest 8848. All rights reserved.</p>
+            <p>© <span id="year"></span> Everest 8848. All Rights Reserved.</p>
             <div class="footer-social">
-                <a href="#" class="footer-social-link"><i data-lucide="instagram" size="18"></i></a>
-                <a href="#" class="footer-social-link"><i data-lucide="facebook" size="18"></i></a>
+                <a href="https://www.instagram.com/everest8848resturang/" target="_blank"><i data-lucide="instagram"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61585972942322"><i data-lucide="facebook"></i></a>
             </div>
         </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script>
-    lucide.createIcons();
-    document.getElementById("year").textContent = new Date().getFullYear();
+    <script>
+        let currentLang = localStorage.getItem('lang') || 'sv';
+        let currentFilter = 'all';
 
-    const IMAGES = [
-      { src: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/b86cc1bb1_WhatsAppImage2025-12-02at14751AM2.jpg', title: 'Momo', category: 'food' },
-      { src: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/67338a87e_WhatsAppImage2025-12-02at15303AM1.jpg', title: 'Chowmein', category: 'food' },
-      { src: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/eb013bc7a_WhatsAppImage2025-12-02at15303AM.jpg', title: 'E8 Thali', category: 'food' },
-      { src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800', title: 'Interior', category: 'ambiance' },
-      { src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800', title: 'Dining', category: 'ambiance' }
-    ];
+        const TRANSLATIONS = {
+            sv: {
+                "nav-home": "Hem", "nav-menu": "Meny", "nav-gallery": "Galleri", "nav-booking": "Boka Bord", "nav-contact": "Kontakt",
+                "hero-kicker": "Upplev Atmosfären", "hero-title": "Galleri", "hero-desc": "En inblick i vår passion för matlagning och vår unika restaurangmiljö.",
+                "filter-all": "Alla", "filter-food": "Mat", "filter-ambiance": "Atmosfär",
+                "footer-tag": "Autentiskt nepalesiskt och indiskt kök i Stockholm.", "footer-links-h": "Snabblänkar", "footer-contact-h": "Kontakt"
+            },
+            en: {
+                "nav-home": "Home", "nav-menu": "Menu", "nav-gallery": "Gallery", "nav-booking": "Booking", "nav-contact": "Contact",
+                "hero-kicker": "Experience Ambiance", "hero-title": "Gallery", "hero-desc": "A glimpse into our passion for cooking and our unique atmosphere.",
+                "filter-all": "All", "filter-food": "Food", "filter-ambiance": "Ambiance",
+                "footer-tag": "Authentic Nepalese and Indian cuisine in Stockholm.", "footer-links-h": "Quick Links", "footer-contact-h": "Contact"
+            }
+        };
 
-    let filter = 'all';
+        const IMAGES = [
+            { src: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/b86cc1bb1_WhatsAppImage2025-12-02at14751AM2.jpg', title_sv: 'Momo', title_en: 'Momo', category: 'food' },
+            { src: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/67338a87e_WhatsAppImage2025-12-02at15303AM1.jpg', title_sv: 'Chowmein', title_en: 'Chowmein', category: 'food' },
+            { src: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/eb013bc7a_WhatsAppImage2025-12-02at15303AM.jpg', title_sv: 'E8 Thali', title_en: 'E8 Thali', category: 'food' },
+            { src: 'everest.jpeg', title_sv: 'Interiör', title_en: 'Interior', category: 'ambiance' },
+            { src: 'food.png', title_sv: 'Restaurangen', title_en: 'The Restaurant', category: 'ambiance' }
+        ];
 
-    function render() {
-      const grid = document.getElementById('galleryGrid');
-      grid.innerHTML = IMAGES.filter(img => filter === 'all' || img.category === filter).map(img => `
-        <div class="gallery-item" onclick="openLightbox('${img.src}')">
-          <img src="${img.src}" alt="${img.title}">
-          <div class="gallery-overlay"><p class="gallery-title h-serif">${img.title}</p></div>
-        </div>
-      `).join('');
-    }
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            updateUI();
+        }
 
-    function openLightbox(src) {
-      document.getElementById('lightboxImage').src = src;
-      document.getElementById('lightbox').classList.add('active');
-    }
+        function updateUI() {
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                el.textContent = TRANSLATIONS[currentLang][key];
+            });
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${currentLang}`).classList.add('active');
+            renderGallery();
+        }
 
-    document.getElementById('lightboxClose').onclick = () => document.getElementById('lightbox').classList.remove('active');
-    document.getElementById('lightbox').onclick = (e) => { if(e.target.id === 'lightbox') e.target.classList.remove('active'); }
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            const filtered = IMAGES.filter(img => currentFilter === 'all' || img.category === currentFilter);
+            
+            grid.innerHTML = filtered.map(img => `
+                <div class="gallery-item" onclick="openLightbox('${img.src}')">
+                    <img src="${img.src}" alt="${currentLang === 'sv' ? img.title_sv : img.title_en}">
+                    <div class="gallery-overlay">
+                        <p class="gallery-title h-serif">${currentLang === 'sv' ? img.title_sv : img.title_en}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.onclick = () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        filter = btn.dataset.filter;
-        render();
-      };
-    });
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            document.getElementById('lightboxImage').src = src;
+            lb.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
 
-    render();
-  </script>
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('lightboxClose').onclick = closeLightbox;
+        document.getElementById('lightbox').onclick = (e) => { if(e.target.id === 'lightbox') closeLightbox(); };
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderGallery();
+            };
+        });
+
+        lucide.createIcons();
+        document.getElementById('year').textContent = new Date().getFullYear();
+        updateUI();
+    </script>
 </body>
 </html>

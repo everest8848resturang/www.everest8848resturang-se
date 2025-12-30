@@ -1,483 +1,406 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Menu • EVEREST 8848</title>
-  
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <style>
-    :root {
-      --cream: #FFFEF7;
-      --gold: #D4AF37;
-      --gold-hover: #C4A030;
-      --ink: #1A1A1A;
-      --panel: #F8F7F2;
-      --white: #FFFFFF;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    .h-serif {
-      font-family: ui-serif, Georgia, serif;
-    }
-
-    /* --- Navigation --- */
-    .nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: rgba(255, 254, 247, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(26, 26, 26, 0.1);
-      padding: 0.75rem 0;
-    }
-
-    .nav-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--ink);
-    }
-
-    .brand-logo {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--ink);
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-
-    .nav-links a:hover {
-      color: var(--gold);
-    }
-
-    .lang {
-      background: var(--gold);
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 12px;
-    }
-
-    /* --- Hero --- */
-    .hero {
-      padding: 6rem 1.5rem 4rem;
-      background: var(--ink);
-      margin-top: 60px;
-      text-align: center;
-      color: var(--white);
-    }
-
-    .kicker {
-      color: var(--gold);
-      font-size: 0.8rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      margin-bottom: 1rem;
-    }
-
-    .hero p {
-      color: rgba(255, 255, 255, 0.6);
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* --- Sticky Menu Tabs --- */
-    .tabs-section {
-      position: sticky;
-      top: 65px;
-      z-index: 90;
-      background: var(--cream);
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .tabs-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: flex;
-      overflow-x: auto;
-      padding: 1rem 1.5rem;
-      gap: 0.5rem;
-      scrollbar-width: none;
-    }
-
-    .tabs-inner::-webkit-scrollbar { display: none; }
-
-    .tab {
-      padding: 0.6rem 1.2rem;
-      border-radius: 20px;
-      border: 1px solid rgba(0,0,0,0.1);
-      background: var(--white);
-      white-space: nowrap;
-      cursor: pointer;
-      font-size: 0.85rem;
-      transition: all 0.3s ease;
-    }
-
-    .tab.active {
-      background: var(--ink);
-      color: var(--white);
-      border-color: var(--ink);
-    }
-
-    /* --- Menu Cards --- */
-    .menu-section {
-      padding: 3rem 1.5rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .menu-card {
-      background: var(--white);
-      padding: 1.5rem;
-      border-radius: 12px;
-      margin-bottom: 1rem;
-      border: 1px solid rgba(0,0,0,0.03);
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 1.5rem;
-      transition: transform 0.2s;
-    }
-
-    .menu-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-    }
-
-    .item-info h3 {
-      font-size: 1.15rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .item-desc {
-      font-size: 0.9rem;
-      color: #666;
-      line-height: 1.5;
-    }
-
-    .item-price {
-      font-weight: 700;
-      color: var(--gold);
-      font-size: 1.2rem;
-      white-space: nowrap;
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.65rem;
-      padding: 2px 8px;
-      border-radius: 4px;
-      margin-left: 5px;
-      vertical-align: middle;
-      text-transform: uppercase;
-    }
-    .badge-veg { background: #e6f4ea; color: #1e7e34; }
-    .badge-popular { background: #fff4e5; color: #b7791f; }
-    .badge-spicy { background: #fff5f5; color: #c53030; }
-
-    /* --- Footer --- */
-    .footer {
-      background: var(--ink);
-      color: var(--white);
-      padding: 4rem 1.5rem 2rem;
-      margin-top: 4rem;
-    }
-
-    .footer-container { max-width: 1200px; margin: 0 auto; }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Meny | EVEREST 8848</title>
     
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 3rem;
-      padding-bottom: 3rem;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .footer-logo { width: 100px; margin-bottom: 1rem; }
-    .footer-tagline { color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    <script src="https://unpkg.com/lucide@latest"></script>
     
-    .footer-section h4 {
-      color: var(--gold);
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      letter-spacing: 0.1em;
-      margin-bottom: 1.5rem;
-    }
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap');
 
-    .footer-links a {
-      display: block;
-      color: rgba(255,255,255,0.7);
-      text-decoration: none;
-      margin-bottom: 0.8rem;
-      font-size: 0.9rem;
-      transition: color 0.3s;
-    }
+        :root {
+            --gold: #c5a059;
+            --gold-light: #e2c28d;
+            --black: #0a0a0a;
+            --near-black: #121212;
+            --white: #ffffff;
+            --gray: #a0a0a0;
+            --cream: #FFFEF7;
+        }
 
-    .footer-links a:hover { color: var(--gold); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    .footer-contact-item {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 1rem;
-      color: rgba(255,255,255,0.7);
-      font-size: 0.9rem;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--cream);
+            color: var(--black);
+            line-height: 1.6;
+        }
 
-    .footer-bottom {
-      padding-top: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
+        .h-serif { font-family: 'Cormorant Garamond', serif; }
 
-    .footer-social { display: flex; gap: 1rem; }
-    .footer-social-link {
-      width: 36px; height: 36px;
-      background: rgba(255,255,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 50%; color: white; transition: 0.3s;
-    }
-    .footer-social-link:hover { background: var(--gold); }
+        /* --- Navigation --- */
+        .nav {
+            position: fixed;
+            top: 0; width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+            padding: 1rem 0;
+        }
 
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .footer-grid { text-align: center; }
-      .footer-contact-item { justify-content: center; }
-      .footer-bottom { justify-content: center; text-align: center; }
-    }
-  </style>
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--white); }
+        .brand img { width: 50px; height: 50px; }
+
+        .nav-right { display: flex; align-items: center; gap: 2rem; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--white);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+        .lang-switch { 
+            display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 1px;
+            border-left: 1px solid rgba(197, 160, 89, 0.3); padding-left: 1.5rem;
+        }
+        .lang-btn { 
+            background: none; border: none; color: var(--white); cursor: pointer; 
+            text-transform: uppercase; opacity: 0.5; transition: 0.3s; padding: 0;
+        }
+        .lang-btn.active { opacity: 1; color: var(--gold); font-weight: 600; }
+        .lang-divider { opacity: 0.3; color: white; }
+
+        /* --- Hero --- */
+        .hero {
+            padding: 12rem 2rem 6rem;
+            background: var(--black);
+            text-align: center;
+            color: var(--white);
+        }
+        .hero-sub { color: var(--gold); text-transform: uppercase; letter-spacing: 4px; font-size: 0.9rem; margin-bottom: 1rem; display: block; }
+        .hero h1 { font-size: clamp(3rem, 6vw, 4.5rem); margin-bottom: 1.5rem; font-weight: 400; }
+
+        /* --- Tabs --- */
+        .tabs-section {
+            position: sticky;
+            top: 82px;
+            z-index: 900;
+            background: var(--cream);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 1rem 0;
+        }
+        .tabs-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            padding: 0 2rem;
+            gap: 1rem;
+            scrollbar-width: none;
+        }
+        .tabs-inner::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            border: 1px solid rgba(0,0,0,0.1);
+            background: var(--white);
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--black); color: var(--white); border-color: var(--black); }
+
+        /* --- Menu List --- */
+        .menu-container { padding: 4rem 2rem; max-width: 1000px; margin: 0 auto; min-height: 50vh; }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            gap: 2rem;
+        }
+        .item-info h3 { font-size: 1.4rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px; }
+        .item-desc { color: #666; font-size: 0.95rem; max-width: 600px; }
+        .item-price { color: var(--gold); font-weight: 600; font-size: 1.2rem; white-space: nowrap; }
+
+        .badge {
+            font-size: 0.65rem; padding: 3px 10px; border-radius: 4px; 
+            text-transform: uppercase; font-weight: 700; letter-spacing: 1px;
+        }
+        .badge-veg { background: #e6f4ea; color: #1e7e34; }
+        .badge-popular { background: #fff4e5; color: #b7791f; }
+        .badge-spicy { background: #fff5f5; color: #c53030; }
+
+        /* --- Footer --- */
+        .footer { 
+            background: var(--near-black); 
+            color: var(--white); 
+            padding: 6rem 2rem 3rem; 
+            border-top: 1px solid rgba(197, 160, 89, 0.1);
+            margin-top: 6rem;
+        }
+        .footer-grid {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 4rem; padding-bottom: 4rem;
+        }
+        .footer-logo { width: 80px; margin-bottom: 1.5rem; }
+        .footer-section h4 { color: var(--gold); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 2rem; }
+        .footer-links a { display: block; color: var(--gray); text-decoration: none; margin-bottom: 1rem; font-size: 0.9rem; transition: 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-contact p { color: var(--gray); font-size: 0.9rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        
+        .footer-bottom { 
+            max-width: 1200px; margin: 0 auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; align-items: center; color: var(--gray); font-size: 0.8rem;
+        }
+        .footer-social { display: flex; gap: 1.5rem; }
+        .footer-social a { color: var(--white); transition: 0.3s; }
+        .footer-social a:hover { color: var(--gold); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .footer-bottom { flex-direction: column; gap: 1.5rem; }
+            .menu-item { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
 </head>
 <body>
 
-  <header class="nav">
-    <div class="nav-inner">
-      <a class="brand" href="index.html">
-        <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="brand-logo">
-        <div>
-          <div style="font-weight:800; letter-spacing:.1em; font-size: 1.1rem;">EVEREST 8848</div>
-          <div style="font-size:9px; color:rgba(26,26,26,.5); text-transform:uppercase; letter-spacing: 0.1em;">Restaurant & Bar</div>
-        </div>
-      </a>
-      <nav class="nav-links">
-        <a href="index.html">Hem</a>
-        <a href="menu.html" style="color: var(--gold);">Meny</a>
-        <a href="gallery.html">Galleri</a>
-        <a href="booking.html">Boka Bord</a>
-        <a href="contact.html">Kontakt</a>
-      </nav>
-      <button class="lang">SV</button>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <span class="kicker">Välkommen</span>
-      <h1 class="h-serif">Vår Meny</h1>
-      <p>Upplev autentiska smaker från Nepal och Indien, tillagade med traditionella tekniker och de finaste råvarorna.</p>
-    </section>
-
-    <nav class="tabs-section">
-      <div class="tabs-inner" id="tabs-container">
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="brand">
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo">
+                <span class="h-serif" style="font-size: 1.4rem; letter-spacing: 2px;">EVEREST 8848</span>
+            </a>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="index.html" data-t="nav-home">Hem</a>
+                    <a href="menu.html" class="active" data-t="nav-menu">Meny</a>
+                    <a href="gallery.html" data-t="nav-gallery">Galleri</a>
+                    <a href="booking.html" data-t="nav-booking">Boka Bord</a>
+                    <a href="contact.html" data-t="nav-contact">Kontakt</a>
+                </div>
+                <div class="lang-switch">
+                    <button onclick="changeLanguage('sv')" class="lang-btn" id="btn-sv">SV</button>
+                    <span class="lang-divider">|</span>
+                    <button onclick="changeLanguage('en')" class="lang-btn" id="btn-en">EN</button>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <section class="menu-section" id="menu-list">
-      </section>
-  </main>
+    <header class="hero">
+        <span class="hero-sub" data-t="hero-kicker">Autentiska Smaker</span>
+        <h1 class="h-serif" data-t="hero-title">Vår Meny</h1>
+    </header>
 
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="footer-logo">
-          <p class="footer-tagline">Autentiskt nepalesiskt och indiskt kök i hjärtat av Stockholm.</p>
-        </div>
-
-        <div class="footer-section">
-          <h4>Snabblänkar</h4>
-          <div class="footer-links">
-            <a href="index.html">Hem</a>
-            <a href="menu.html">Meny</a>
-            <a href="booking.html">Boka Bord</a>
-            <a href="contact.html">Kontakt</a>
-          </div>
-        </div>
-
-        <div class="footer-section">
-          <h4>Kontakt</h4>
-          <div class="footer-contact-item">
-            <i data-lucide="map-pin" size="18"></i>
-            <span>Olofsgatan 7A, 111 36 Stockholm</span>
-          </div>
-          <div class="footer-contact-item">
-            <i data-lucide="phone" size="18"></i>
-            <span>08-123 45 67</span>
-          </div>
-          <div class="footer-contact-item">
-            <i data-lucide="mail" size="18"></i>
-            <span>everest8848e@gmail.com</span>
-          </div>
-        </div>
-
-        <div class="footer-section">
-          <h4>Öppettider</h4>
-          <div class="footer-contact-item">
-            <i data-lucide="clock" size="18"></i>
-            <div>
-              <p>Mån-Tor: 11:00 - 22:00</p>
-              <p>Fre-Lör: 11:00 - 23:00</p>
-              <p>Söndag: Stängt</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>© <span id="year"></span> Everest 8848. All rights reserved.</p>
-        <div class="footer-social">
-          <a href="#" class="footer-social-link"><i data-lucide="instagram" size="18"></i></a>
-          <a href="#" class="footer-social-link"><i data-lucide="facebook" size="18"></i></a>
-        </div>
-      </div>
+    <div class="tabs-section">
+        <div class="tabs-inner" id="tabs-container"></div>
     </div>
-  </footer>
 
-  <script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
-    document.getElementById('year').textContent = new Date().getFullYear();
+    <main class="menu-container" id="menu-list"></main>
 
-    // The Menu Data
-    const MENU_DATA = {
-      "förrätter-veg": [
-        { name: "Chili Cheese", desc: "Friterade jalapeño- och ostbollar (5st).", price: "59", veg: true },
-        { name: "Halloumi-nuggets", desc: "Krispigt friterade bitar av halloumi (5st).", price: "89", veg: true },
-        { name: "Paneer Pakora", desc: "Indisk ost doppad i kryddig frityrsmet.", price: "89", veg: true },
-        { name: "Friterad Blomkål", desc: "Panerade i ägg och grovt ströbröd.", price: "60", veg: true }
-      ],
-      "förrätter-nonveg": [
-        { name: "King Prawn", desc: "Marinerad i lime, vitlök & peppar, friterad (4st).", price: "100" },
-        { name: "Kycklingvingar Bacon", desc: "Marinerade vingar täckta med bacon.", price: "89" },
-        { name: "Kycklingnuggets", desc: "Klassiska krispiga nuggets (5st).", price: "69" }
-      ],
-      "thali": [
-        { name: "Everest Special Thali", desc: "Basmatiris, linser, lamm, kyckling, prawn, raita & papadum.", price: "319", popular: true },
-        { name: "Thakali Thali", desc: "Lamm, ris, linser, grönsaker, raita & papadum.", price: "279" },
-        { name: "Signatur Veg Thali", desc: "Spenat, ost, ris, linser, pickel & yoghurt.", price: "249", veg: true }
-      ],
-      "momo": [
-        { name: "Kyckling Momo", desc: "Ångade dumplings med kyckling och chutney.", price: "199", popular: true },
-        { name: "Vegetarisk Momo", desc: "Dumplings med paneer, lök och ingefära.", price: "189", veg: true },
-        { name: "Jhol Momo", desc: "Serveras i varm kryddig sesambuljong.", price: "209", spicy: true }
-      ],
-      "schnitzel": [
-        { name: "Everest Special Schnitzel", desc: "Mix av panerad ost och fläskschnitzel.", price: "249", popular: true },
-        { name: "Royal Schnitzel", desc: "Fläskschnitzel med skinka och ost.", price: "279" },
-        { name: "Panerad Rödspetta", desc: "Friterad med smör, serveras med potatis.", price: "179" }
-      ],
-      "drycker": [
-        { name: "Läsk", desc: "Cola, Fanta, Sprite, Ramlösa.", price: "35" }
-      ]
-    };
-
-    const categories = [
-      { id: "förrätter-veg", label: "Förrätter (Veg)" },
-      { id: "förrätter-nonveg", label: "Förrätter (Kött)" },
-      { id: "thali", label: "Thali" },
-      { id: "momo", label: "Momo" },
-      { id: "schnitzel", label: "Schnitzel" },
-      { id: "drycker", label: "Drycker" }
-    ];
-
-    let currentCat = "förrätter-veg";
-
-    function initMenu() {
-      const tabContainer = document.getElementById('tabs-container');
-      
-      // Render Tabs
-      tabContainer.innerHTML = categories.map(cat => `
-        <button class="tab ${cat.id === currentCat ? 'active' : ''}" onclick="switchCategory('${cat.id}')">
-          ${cat.label}
-        </button>
-      `).join('');
-
-      // Render Items
-      const listContainer = document.getElementById('menu-list');
-      const items = MENU_DATA[currentCat];
-      
-      listContainer.innerHTML = items.map(item => `
-        <div class="menu-card">
-          <div class="item-info">
-            <h3>
-              ${item.name}
-              ${item.veg ? '<span class="badge badge-veg">Veg</span>' : ''}
-              ${item.popular ? '<span class="badge badge-popular">Populär</span>' : ''}
-              ${item.spicy ? '<span class="badge badge-spicy">Stark</span>' : ''}
-            </h3>
-            <p class="item-desc">${item.desc}</p>
-          </div>
-          <div class="item-price">${item.price} kr</div>
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="footer-logo">
+                <p data-t="footer-tag">Autentiskt nepalesiskt och indiskt kök i hjärtat av Stockholm.</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-t="footer-links-h">Snabblänkar</h4>
+                <div class="footer-links">
+                    <a href="index.html" data-t="nav-home">Hem</a>
+                    <a href="menu.html">Meny</a>
+                    <a href="gallery.html" data-t="nav-gallery">Galleri</a>
+                    <a href="booking.html" data-t="nav-booking">Boka Bord</a>
+                    <a href="contact.html" data-t="nav-contact">Kontakt</a>
+                </div>
+            </div>
+            <div class="footer-section footer-contact">
+                <h4 data-t="footer-contact-h">Kontakt</h4>
+                <p><i data-lucide="map-pin" size="14"></i> Olofsgatan 7A, Stockholm</p>
+                <p><i data-lucide="phone" size="14"></i> 08-123 45 67</p>
+                <p><i data-lucide="mail" size="14"></i> everest8848@gmail.com</p>
+            </div>
         </div>
-      `).join('');
-    }
+        <div class="footer-bottom">
+            <p>© <span id="year"></span> Everest 8848. All Rights Reserved.</p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/everest8848resturang/" target="_blank"><i data-lucide="instagram"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61585972942322"><i data-lucide="facebook"></i></a>
+            </div>
+        </div>
+    </footer>
 
-    function switchCategory(id) {
-      currentCat = id;
-      initMenu();
-      // Smooth scroll back to top of menu
-      window.scrollTo({ top: document.querySelector('.tabs-section').offsetTop - 70, behavior: 'smooth' });
-    }
+    <script>
+        let currentLang = localStorage.getItem('lang') || 'sv';
 
-    // Load initial
-    initMenu();
-  </script>
+        const TRANSLATIONS = {
+            sv: {
+                "nav-home": "Hem", "nav-menu": "Meny", "nav-gallery": "Galleri", "nav-booking": "Boka Bord", "nav-contact": "Kontakt",
+                "hero-kicker": "Autentiska Smaker", "hero-title": "Vår Meny",
+                "footer-tag": "Autentiskt nepalesiskt och indiskt kök i Stockholm.", "footer-links-h": "Snabblänkar", "footer-contact-h": "Kontakt",
+                "badge-veg": "Veg", "badge-popular": "Populär", "badge-spicy": "Stark", "badge-vegan": "Vegansk"
+            },
+            en: {
+                "nav-home": "Home", "nav-menu": "Menu", "nav-gallery": "Gallery", "nav-booking": "Booking", "nav-contact": "Contact",
+                "hero-kicker": "Authentic Flavors", "hero-title": "Our Menu",
+                "footer-tag": "Authentic Nepalese and Indian cuisine in Stockholm.", "footer-links-h": "Quick Links", "footer-contact-h": "Contact",
+                "badge-veg": "Veg", "badge-popular": "Popular", "badge-spicy": "Spicy", "badge-vegan": "Vegan"
+            }
+        };
+
+        const MENU_DATA = {
+            "förrätter": {
+                label: { sv: "Förrätter", en: "Starters" },
+                items: [
+                    { name: {sv: "Chili Cheese", en: "Chili Cheese"}, desc: {sv: "Friterade jalapeño- och ostbollar (5st).", en: "Fried jalapeño and cheese balls (5pcs)."}, price: "59", veg: true },
+                    { name: {sv: "Halloumi-nuggets", en: "Halloumi Nuggets"}, desc: {sv: "Krispigt friterade bitar av halloumi (5st).", en: "Crispy fried halloumi pieces (5pcs)."}, price: "89", veg: true },
+                    { name: {sv: "Paneer Pakora", en: "Paneer Pakora"}, desc: {sv: "Indisk ost doppad i kryddig frityrsmet.", en: "Indian cheese dipped in spicy batter."}, price: "89", veg: true },
+                    { name: {sv: "Friterad Blomkål", en: "Fried Cauliflower"}, desc: {sv: "Panerade i ägg och grovt ströbröd.", en: "Breaded in egg and coarse breadcrumbs."}, price: "60", veg: true },
+                    { name: {sv: "King Prawn", en: "King Prawn"}, desc: {sv: "Marinerad i lime, vitlök & peppar, friterad (4st).", en: "Marinated in lime, garlic & pepper, fried (4pcs)."}, price: "100" },
+                    { name: {sv: "Kycklingvingar Bacon", en: "Bacon Chicken Wings"}, desc: {sv: "Marinerade vingar täckta med bacon.", en: "Marinated wings wrapped in bacon."}, price: "89" },
+                    { name: {sv: "Kycklingnuggets", en: "Chicken Nuggets"}, desc: {sv: "Klassiska krispiga nuggets (5st).", en: "Classic crispy nuggets (5pcs)."}, price: "69" }
+                ]
+            },
+            "thali": {
+                label: { sv: "Thali", en: "Thali" },
+                items: [
+                    { 
+                        name: {sv: "Everest Special Thali", en: "Everest Special Thali"}, 
+                        desc: {sv: "Exklusiv kombination av basmatiris, linser, papadum, lamm, kyckling och räkor. Serveras med yoghurtsås, sallad och ghee.", en: "Exclusive combination of basmati rice, lentils, papadum, lamb, chicken, and prawns. Served with yogurt sauce, salad, and ghee."}, 
+                        price: "319", popular: true 
+                    },
+                    { 
+                        name: {sv: "Thakali Thali", en: "Thakali Thali"}, 
+                        desc: {sv: "Lamm, basmatiris, linser, grönsaker, papadum, yoghurtsås, sallad.", en: "Lamb, basmati rice, lentils, vegetables, papadum, yogurt sauce, salad."}, 
+                        price: "279" 
+                    },
+                    { 
+                        name: {sv: "Royal Gurkha Thali", en: "Royal Gurkha Thali"}, 
+                        desc: {sv: "Kycklingfilé, basmatiris, linser, grönsaker, sallad, papadum, yoghurtsås.", en: "Chicken fillet, basmati rice, lentils, vegetables, salad, papadum, yogurt sauce."}, 
+                        price: "249" 
+                    },
+                    { 
+                        name: {sv: "Our Signature Veg Thali", en: "Our Signature Veg Thali"}, 
+                        desc: {sv: "Bladspenat, Paneer, ris, grönsaker, röda bönor, pickel, papadum, yoghurtsås och sallad.", en: "Spinach, Paneer, rice, vegetables, red beans, pickle, papadum, yogurt sauce, and salad."}, 
+                        price: "249", veg: true 
+                    },
+                    { 
+                        name: {sv: "Vegansk Thali", en: "Vegan Thali"}, 
+                        desc: {sv: "Bladspenat, tofu/oumph, ris, grönsaker, röda bönor, papadum, pickles och sallad.", en: "Spinach, tofu/oumph, rice, vegetables, red beans, papadum, pickles, and salad."}, 
+                        price: "240", veg: true 
+                    },
+                    { 
+                        name: {sv: "E8 Thali", en: "E8 Thali"}, 
+                        desc: {sv: "Basmatiris, linser, fläskgryta, tomatpickel, sallad, papadum och yoghurtsås.", en: "Basmati rice, lentils, pork stew, tomato pickle, salad, papadum, and yogurt sauce."}, 
+                        price: "249" 
+                    }
+                ]
+            },
+            "sekuwa": {
+                label: { sv: "Sekuwa (Grill)", en: "Sekuwa (Grill)" },
+                items: [
+                    { name: {sv: "Everest chicken sekuwa", en: "Everest Chicken Sekuwa"}, desc: {sv: "Kyckling, grönsaker, ingefära, mint, paprika, vitlökssås", en: "Chicken, vegetables, ginger, mint, bell pepper, garlic sauce"}, price: "335" },
+                    { name: {sv: "Himalayan lamm Sekuwa", en: "Himalayan Lamb Sekuwa"}, desc: {sv: "Lammyterfile, Tandoori krydda, rödlök, lime, vitlök, mango limesås", en: "Lamb fillet, Tandoori spices, red onion, lime, garlic, mango lime sauce"}, price: "265" },
+                    { name: {sv: "Garlik BBQ grill", en: "Garlic BBQ Grill"}, desc: {sv: "Kyckling, vitlök, grönchilli, koriander, grönsaker, vitlökssås", en: "Chicken, garlic, green chili, coriander, vegetables, garlic sauce"}, price: "245" },
+                    { name: {sv: "Piripiri Badel", en: "Piri Piri Badel (Fish)"}, desc: {sv: "Manierad fiskfile, chili, vitlöks, grönsaker, mango limesås", en: "Marinated fish fillet, chili, garlic, vegetables, mango lime sauce"}, price: "250" },
+                    { name: {sv: "Lamm chop grill", en: "Lamb Chop Grill"}, desc: {sv: "Lammrack, ingefära, vitlök, grillolja, lime, grönsaker, vitlökssås", en: "Lamb racks, ginger, garlic, grill oil, lime, vegetables, garlic sauce"}, price: "295" },
+                    { name: {sv: "Kungs prawn grill", en: "King Prawn Grill"}, desc: {sv: "Tigerräkor, lime, chilli, koriander, grönsaker, mango limesås", en: "Tiger prawns, lime, chili, coriander, vegetables, mango lime sauce"}, price: "255" }
+                ]
+            },
+            "momo": {
+                label: { sv: "Momo", en: "Momo (Dumplings)" },
+                items: [
+                    { name: {sv: "Kyckling Momo", en: "Chicken Momo"}, desc: {sv: "Ångade dumplings med kyckling och chutney.", en: "Steamed dumplings with chicken and chutney."}, price: "199", popular: true },
+                    { name: {sv: "Vegetarisk Momo", en: "Vegetarian Momo"}, desc: {sv: "Dumplings med paneer, lök och ingefära.", en: "Dumplings with paneer, onion and ginger."}, price: "189", veg: true },
+                    { name: {sv: "Jhol Momo", en: "Jhol Momo"}, desc: {sv: "Serveras i varm kryddig sesambuljong.", en: "Served in warm spicy sesame broth."}, price: "209", spicy: true }
+                ]
+            },
+            "schnitzel": {
+                label: { sv: "Schnitzel", en: "Schnitzel" },
+                items: [
+                    { name: {sv: "Everest Special Schnitzel", en: "Everest Special Schnitzel"}, desc: {sv: "Mix av panerad ost och fläskschnitzel.", en: "Mix of breaded cheese and pork schnitzel."}, price: "249", popular: true },
+                    { name: {sv: "Royal Schnitzel", en: "Royal Schnitzel"}, desc: {sv: "Fläskschnitzel med skinka och ost.", en: "Pork schnitzel with ham and cheese."}, price: "279" },
+                    { name: {sv: "Panerad Rödspetta", en: "Breaded Plaice"}, desc: {sv: "Friterad med smör, serveras med potatis.", en: "Fried with butter, served with potatoes."}, price: "179" }
+                ]
+            },
+            "drycker": {
+                label: { sv: "Drycker", en: "Drinks" },
+                items: [
+                    { name: {sv: "Läsk", en: "Soft Drinks"}, desc: {sv: "Cola, Fanta, Sprite, Ramlösa.", en: "Coke, Fanta, Sprite, Sparkling Water."}, price: "35" }
+                ]
+            }
+        };
+
+        let activeCategory = "thali"; // Sätter Thali som startkategori då den är nyligen tillagd
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            updateUI();
+        }
+
+        function updateUI() {
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                el.textContent = TRANSLATIONS[currentLang][key];
+            });
+
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${currentLang}`).classList.add('active');
+
+            renderMenu();
+        }
+
+        function renderMenu() {
+            const tabContainer = document.getElementById('tabs-container');
+            const listContainer = document.getElementById('menu-list');
+
+            tabContainer.innerHTML = Object.keys(MENU_DATA).map(key => `
+                <button class="tab-btn ${key === activeCategory ? 'active' : ''}" onclick="switchCategory('${key}')">
+                    ${MENU_DATA[key].label[currentLang]}
+                </button>
+            `).join('');
+
+            listContainer.innerHTML = MENU_DATA[activeCategory].items.map(item => `
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h3 class="h-serif">
+                            ${item.name[currentLang]}
+                            ${item.veg ? `<span class="badge badge-veg">${TRANSLATIONS[currentLang]['badge-veg']}</span>` : ''}
+                            ${item.popular ? `<span class="badge badge-popular">${TRANSLATIONS[currentLang]['badge-popular']}</span>` : ''}
+                            ${item.spicy ? `<span class="badge badge-spicy">${TRANSLATIONS[currentLang]['badge-spicy']}</span>` : ''}
+                        </h3>
+                        <p class="item-desc">${item.desc[currentLang]}</p>
+                    </div>
+                    <div class="item-price">${item.price} kr</div>
+                </div>
+            `).join('');
+        }
+
+        function switchCategory(id) {
+            activeCategory = id;
+            renderMenu();
+            const offset = document.querySelector('.tabs-section').offsetTop - 100;
+            window.scrollTo({ top: offset, behavior: 'smooth' });
+        }
+
+        lucide.createIcons();
+        document.getElementById('year').textContent = new Date().getFullYear();
+        updateUI();
+    </script>
 </body>
 </html>

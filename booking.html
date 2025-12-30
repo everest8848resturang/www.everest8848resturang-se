@@ -1,290 +1,408 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boka Bord - Everest 8848</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Boka Bord | EVEREST 8848</title>
     
     <script src="https://unpkg.com/lucide@latest"></script>
-    
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap');
+
         :root {
-            --color-gold: #D4AF37;
-            --color-cream: #FFFEF7;
-            --color-charcoal: #1A1A1A;
-            --color-dark-bg: #2C2C2C;
+            --gold: #c5a059;
+            --gold-light: #e2c28d;
+            --black: #0a0a0a;
+            --near-black: #121212;
+            --white: #ffffff;
+            --gray: #a0a0a0;
+            --cream: #FFFEF7;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--color-cream);
-            color: var(--color-charcoal);
+            background-color: var(--cream);
+            color: var(--black);
+            line-height: 1.6;
+            min-height: 100vh;
         }
 
-        .font-serif { font-family: 'Cormorant Garamond', serif; }
+        .h-serif { font-family: 'Cormorant Garamond', serif; }
 
-        /* Navigation */
+        /* --- Navigation --- */
         .nav {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            background: rgba(255, 254, 247, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+            position: fixed;
+            top: 0; width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
             padding: 1rem 0;
         }
 
         .nav-inner {
-            max-width: 1280px; margin: 0 auto; padding: 0 1.5rem;
-            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #1A1A1A; }
-        .brand-logo { width: 80px; height: 80px; object-fit: contain; }
+        .brand { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: var(--white); }
+        .brand img { width: 50px; height: 50px; }
 
-        .nav-links { display: flex; gap: 2rem; }
+        .nav-right { display: flex; align-items: center; gap: 2rem; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a {
-            text-decoration: none; color: #1A1A1A; font-size: 14px;
-            text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s;
+            text-decoration: none;
+            color: var(--white);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
         }
-        .nav-links a:hover { color: var(--color-gold); }
+        .nav-links a:hover, .nav-links a.active { color: var(--gold); }
 
-        /* Hero Section */
+        .lang-switch { 
+            display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; letter-spacing: 1px;
+            border-left: 1px solid rgba(197, 160, 89, 0.3); padding-left: 1.5rem;
+        }
+        .lang-btn { 
+            background: none; border: none; color: var(--white); cursor: pointer; 
+            text-transform: uppercase; opacity: 0.5; transition: 0.3s; padding: 0;
+        }
+        .lang-btn.active { opacity: 1; color: var(--gold); font-weight: 600; }
+        .lang-divider { opacity: 0.3; color: white; }
+
+        /* --- Hero --- */
         .hero {
-            background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
-            padding: 180px 40px 100px; text-align: center; margin-top: 72px;
+            padding: 12rem 2rem 6rem;
+            background: var(--black);
+            text-align: center;
+            color: var(--white);
         }
+        .hero-sub { color: var(--gold); text-transform: uppercase; letter-spacing: 4px; font-size: 0.9rem; margin-bottom: 1rem; display: block; }
+        .hero h1 { font-size: clamp(3rem, 6vw, 4.5rem); margin-bottom: 1.5rem; font-weight: 400; }
+        .hero p { color: var(--gray); max-width: 600px; margin: 0 auto; }
 
-        .hero-label {
-            color: var(--color-gold); font-size: 0.75rem; letter-spacing: 0.4em;
-            text-transform: uppercase; margin-bottom: 20px; display: block; font-weight: 500;
-        }
-
-        .hero-title { font-size: 5rem; color: white; font-weight: 300; margin-bottom: 30px; }
-        .hero-text { color: rgba(255, 255, 255, 0.65); font-size: 1.125rem; max-width: 50rem; margin: 0 auto; line-height: 1.7; }
-
-        .container { max-width: 42rem; margin: 0 auto; padding: 80px 24px; }
-
+        /* --- Form Styling --- */
+        .booking-section { padding: 4rem 2rem; max-width: 800px; margin: 0 auto; }
+        
         .form-card {
-            background: white; border-radius: 24px; padding: 56px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
-            border: 1px solid rgba(26, 26, 26, 0.05);
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 4px;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
         }
 
-        .form-group { margin-bottom: 32px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-        .form-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
 
         label {
-            display: block; font-size: 0.8rem; color: rgba(26, 26, 26, 0.65);
-            text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 10px; font-weight: 600;
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            color: var(--black);
         }
 
         input, select, textarea {
-            width: 100%; padding: 14px 18px; border: 1px solid rgba(26, 26, 26, 0.12);
-            border-radius: 12px; font-size: 1rem; font-family: inherit; transition: all 0.3s ease;
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            background: #fcfcfc;
+            border-radius: 0;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: 0.3s;
         }
 
         input:focus, select:focus, textarea:focus {
-            outline: none; border-color: var(--color-gold); box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.08);
+            outline: none;
+            border-color: var(--gold);
+            background: var(--white);
         }
 
         .submit-btn {
-            width: 100%; padding: 18px; background: var(--color-gold); color: var(--color-charcoal);
-            border: none; border-radius: 12px; font-size: 0.8rem; font-weight: 700;
-            letter-spacing: 0.25em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--black);
+            color: var(--white);
+            border: 1px solid var(--black);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 1rem;
         }
+        .submit-btn:hover { background: transparent; color: var(--black); }
 
-        .submit-btn:hover { background: #C4A030; transform: translateY(-2px); }
-
-        .success-screen { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 140px 24px; }
-        .success-card { max-width: 30rem; text-align: center; width: 100%; }
-        .success-icon { width: 80px; height: 80px; margin: 0 auto 28px; background: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #16a34a; }
+        /* --- Footer --- */
+        .footer { 
+            background: var(--near-black); 
+            color: var(--white); 
+            padding: 6rem 2rem 3rem; 
+            border-top: 1px solid rgba(197, 160, 89, 0.1);
+            margin-top: 6rem;
+        }
+        .footer-grid {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 4rem; padding-bottom: 4rem;
+        }
+        .footer-logo { width: 80px; margin-bottom: 1.5rem; }
+        .footer-section h4 { color: var(--gold); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 2rem; }
+        .footer-links a { display: block; color: var(--gray); text-decoration: none; margin-bottom: 1rem; font-size: 0.9rem; transition: 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
+        .footer-contact p { color: var(--gray); font-size: 0.9rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        
+        .footer-bottom { 
+            max-width: 1200px; margin: 0 auto; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between; align-items: center; color: var(--gray); font-size: 0.8rem;
+        }
+        .footer-social { display: flex; gap: 1.5rem; }
+        .footer-social a { color: var(--white); transition: 0.3s; }
+        .footer-social a:hover { color: var(--gold); }
 
         .hidden { display: none; }
 
         @media (max-width: 768px) {
             .nav-links { display: none; }
-            .hero-title { font-size: 3rem; }
-            .form-row, .form-row-3 { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
+            .form-card { padding: 1.5rem; }
+            .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <header class="nav">
+    <nav class="nav">
         <div class="nav-inner">
-            <a class="brand" href="index.html">
-                <img src="bild.jpg" alt="Everest 8848 Logo" class="brand-logo">
-                <div>
-                    <div style="font-weight:800; letter-spacing:.12em;">EVEREST 8848</div>
-                    <div style="font-size:12px; color:rgba(26,26,26,.55); text-transform:uppercase;">Restaurant & Bar</div>
-                </div>
+            <a href="index.html" class="brand">
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo">
+                <span class="h-serif" style="font-size: 1.4rem; letter-spacing: 2px;">EVEREST 8848</span>
             </a>
-            <nav class="nav-links">
-                <a href="index.html">Hem</a>
-                <a href="menu.html">Meny</a>
-                <a href="booking.html">Bokning</a>
-                <a href="contact.html">Kontakt</a>
-            </nav>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="index.html" data-t="nav-home">Hem</a>
+                    <a href="menu.html" data-t="nav-menu">Meny</a>
+                    <a href="gallery.html" data-t="nav-gallery">Galleri</a>
+                    <a href="booking.html" class="active" data-t="nav-booking">Boka Bord</a>
+                    <a href="contact.html" data-t="nav-contact">Kontakt</a>
+                </div>
+                <div class="lang-switch">
+                    <button onclick="changeLanguage('sv')" class="lang-btn" id="btn-sv">SV</button>
+                    <span class="lang-divider">|</span>
+                    <button onclick="changeLanguage('en')" class="lang-btn" id="btn-en">EN</button>
+                </div>
+            </div>
         </div>
+    </nav>
+
+    <header class="hero">
+        <span class="hero-sub" data-t="hero-kicker">Välkommen</span>
+        <h1 class="h-serif" data-t="hero-title">Boka Bord</h1>
+        <p data-t="hero-desc">Säkra din plats för en oförglömlig middag med äkta nepalesiska smaker.</p>
     </header>
 
-    <div id="bookingFormView">
-        <section class="hero">
-            <span class="hero-label">RESERVERA</span>
-            <h1 class="hero-title font-serif">Boka Bord</h1>
-            <p class="hero-text">Reservera ditt bord för en oförgömlig matupplevelse hos oss.</p>
-        </section>
-
-        <div class="container">
+    <main>
+        <section class="booking-section" id="bookingFormView">
             <form class="form-card" id="reservationForm">
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Namn *</label>
-                        <input type="text" id="name" required placeholder="Ditt namn">
+                        <label data-t="form-name">Namn</label>
+                        <input type="text" id="name" required>
                     </div>
                     <div class="form-group">
-                        <label>E-post *</label>
-                        <input type="email" id="email" required placeholder="din@email.se">
+                        <label data-t="form-email">E-post</label>
+                        <input type="email" id="email" required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Telefon *</label>
-                    <input type="tel" id="phone" required placeholder="07X XXX XX XX">
+                    <label data-t="form-phone">Telefonnummer</label>
+                    <input type="tel" id="phone" required>
                 </div>
 
-                <div class="form-row-3">
+                <div class="form-row">
                     <div class="form-group">
-                        <label>📅 Datum *</label>
+                        <label data-t="form-date">Datum</label>
                         <input type="date" id="date" required>
                     </div>
                     <div class="form-group">
-                        <label>🕐 Tid *</label>
+                        <label data-t="form-time">Tid</label>
                         <select id="time" required>
-                            <option value="">Välj tid</option>
-                            <option>11:00</option><option>11:30</option>
-                            <option>12:00</option><option>12:30</option>
+                            <option value="" data-t="form-select-time">Välj tid</option>
                             <option>17:00</option><option>17:30</option>
                             <option>18:00</option><option>18:30</option>
                             <option>19:00</option><option>19:30</option>
-                            <option>20:00</option><option>21:00</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>👥 Gäster *</label>
-                        <select id="guests" required>
-                            <option value="">Antal</option>
-                            <option value="1">1 gäst</option>
-                            <option value="2">2 gäster</option>
-                            <option value="3">3 gäster</option>
-                            <option value="4">4 gäster</option>
-                            <option value="5">5 gäster</option>
+                            <option>20:00</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Särskilda Önskemål</label>
-                    <textarea id="special_requests" placeholder="Allergier eller önskemål..."></textarea>
+                    <label data-t="form-guests">Gäster</label>
+                    <select id="guests" required>
+                        <option value="1">1 person</option>
+                        <option value="2">2 personer</option>
+                        <option value="3">3 personer</option>
+                        <option value="4">4 personer</option>
+                        <option value="5">5+ personer</option>
+                    </select>
                 </div>
 
-                <button type="submit" class="submit-btn" id="submitBtn">Bekräfta Bokning</button>
-            </form>
-        </div>
-    </div>
+                <div class="form-group">
+                    <label data-t="form-notes">Särskilda önskemål (t.ex. allergier)</label>
+                    <textarea id="special_requests" rows="3"></textarea>
+                </div>
 
-    <div id="successView" class="success-screen hidden">
-        <div class="success-card">
-            <div class="success-icon"><i data-lucide="check-circle"></i></div>
-            <h2 class="success-title font-serif" style="font-size: 2.5rem; margin-bottom: 20px;">Tack för din bokning!</h2>
-            <p style="color: #666; margin-bottom: 30px;">Vi har tagit emot din reservation och ser fram emot ditt besök.</p>
-            <div style="background: #F8F7F2; padding: 25px; border-radius: 15px; text-align: left;">
-                <p><strong>Namn:</strong> <span id="confirmName"></span></p>
-                <p><strong>Datum:</strong> <span id="confirmDate"></span></p>
-                <p><strong>Tid:</strong> <span id="confirmTime"></span></p>
-                <p><strong>Gäster:</strong> <span id="confirmGuests"></span></p>
+                <button type="submit" class="submit-btn" id="submitBtn" data-t="form-submit">Skicka Bokningsförfrågan</button>
+            </form>
+        </section>
+
+        <section class="booking-section hidden" id="successView">
+            <div class="form-card" style="text-align: center;">
+                <i data-lucide="check-circle" style="color: var(--gold); width: 64px; height: 64px; margin-bottom: 1.5rem;"></i>
+                <h2 class="h-serif" data-t="success-title" style="font-size: 2rem; margin-bottom: 1rem;">Tack för din bokning!</h2>
+                <p data-t="success-desc">Vi har tagit emot din förfrågan och återkommer så snart vi kan.</p>
+                <button onclick="location.reload()" class="submit-btn" style="margin-top: 2.5rem; max-width: 200px; margin-left: auto; margin-right: auto;" data-t="success-back">Tillbaka</button>
             </div>
-            <button onclick="location.reload()" class="submit-btn" style="margin-top: 20px;">Gör en ny bokning</button>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/692e32b8cb1d8523dd92cec2/d5dc49fa0_Gemini_Generated_Image_z7y4h9z7y4h9z7y4.png" alt="Logo" class="footer-logo">
+                <p data-t="footer-tag">Autentiskt nepalesiskt och indiskt kök i hjärtat av Stockholm.</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-t="footer-links-h">Snabblänkar</h4>
+                <div class="footer-links">
+                    <a href="index.html" data-t="nav-home">Hem</a>
+                    <a href="menu.html" data-t="nav-menu">Meny</a>
+                    <a href="gallery.html" data-t="nav-gallery">Galleri</a>
+                    <a href="contact.html" data-t="nav-contact">Kontakt</a>
+                </div>
+            </div>
+            <div class="footer-section footer-contact">
+                <h4 data-t="footer-contact-h">Kontakt</h4>
+                <p><i data-lucide="map-pin" size="14"></i> Olofsgatan 7A, Stockholm</p>
+                <p><i data-lucide="phone" size="14"></i> 08-123 45 67</p>
+                <p><i data-lucide="mail" size="14"></i> everest8848@gmail.com</p>
+            </div>
         </div>
-    </div>
+        <div class="footer-bottom">
+            <p>© <span id="year"></span> Everest 8848. All Rights Reserved.</p>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/everest8848resturang/" target="_blank"><i data-lucide="instagram"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61585972942322"><i data-lucide="facebook"></i></a>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        // 1. FIREBASE CONFIG
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "ID",
-            appId: "APP_ID"
+        let currentLang = localStorage.getItem('lang') || 'sv';
+
+        const TRANSLATIONS = {
+            sv: {
+                "nav-home": "Hem", "nav-menu": "Meny", "nav-gallery": "Galleri", "nav-booking": "Boka Bord", "nav-contact": "Kontakt",
+                "hero-kicker": "Välkommen", "hero-title": "Boka Bord", "hero-desc": "Säkra din plats för en oförglömlig middag med äkta nepalesiska smaker.",
+                "form-name": "Namn", "form-email": "E-post", "form-phone": "Telefonnummer", "form-date": "Datum", 
+                "form-time": "Tid", "form-select-time": "Välj tid", "form-guests": "Gäster", "form-notes": "Särskilda önskemål (t.ex. allergier)",
+                "form-submit": "Skicka Bokningsförfrågan", "success-title": "Tack för din bokning!", 
+                "success-desc": "Vi har tagit emot din förfrågan och återkommer så snart vi kan.", "success-back": "Tillbaka",
+                "footer-tag": "Autentiskt nepalesiskt och indiskt kök i Stockholm.", "footer-links-h": "Snabblänkar", "footer-contact-h": "Kontakt"
+            },
+            en: {
+                "nav-home": "Home", "nav-menu": "Menu", "nav-gallery": "Gallery", "nav-booking": "Booking", "nav-contact": "Contact",
+                "hero-kicker": "Welcome", "hero-title": "Book a Table", "hero-desc": "Secure your spot for an unforgettable dinner with authentic Nepalese flavors.",
+                "form-name": "Name", "form-email": "Email", "form-phone": "Phone Number", "form-date": "Date", 
+                "form-time": "Time", "form-select-time": "Select time", "form-guests": "Guests", "form-notes": "Special requests (e.g., allergies)",
+                "form-submit": "Send Booking Request", "success-title": "Thank you for your booking!",
+                "success-desc": "We have received your request and will get back to you as soon as possible.", "success-back": "Back",
+                "footer-tag": "Authentic Nepalese and Indian cuisine in Stockholm.", "footer-links-h": "Quick Links", "footer-contact-h": "Contact"
+            }
         };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
 
-        // 2. SETUP
-        lucide.createIcons();
-        const dateInput = document.getElementById('date');
-        const timeSelect = document.getElementById('time');
-        dateInput.min = new Date().toISOString().split('T')[0];
+        function changeLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            updateUI();
+        }
 
-        // 3. LIVE CHECK (Inaktivera redan bokade tider)
-        dateInput.addEventListener('change', () => {
-            const selectedDate = dateInput.value;
-            // Återställ alla tider först
-            Array.from(timeSelect.options).forEach(opt => opt.disabled = false);
-
-            db.ref('reservations').orderByChild('date').equalTo(selectedDate).once('value', snapshot => {
-                snapshot.forEach(child => {
-                    const bookedTime = child.val().time;
-                    Array.from(timeSelect.options).forEach(opt => {
-                        if(opt.value === bookedTime) opt.disabled = true;
-                    });
-                });
+        function updateUI() {
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                el.textContent = TRANSLATIONS[currentLang][key];
             });
-        });
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${currentLang}`).classList.add('active');
+        }
 
-        // 4. SUBMIT
+        // Firebase Configuration (Se till att ersätta med dina faktiska värden)
+        const firebaseConfig = {
+       apiKey: "AIzaSyBY89WzJ364MX2Q9OJb_nG4H9TWjY_u1FE",
+       authDomain: "everest-8848-6233d.firebaseapp.com",
+       projectId: "everest-8848-6233d",
+       storageBucket: "everest-8848-6233d.firebasestorage.app",
+      messagingSenderId: "597403134378",
+      appId: "1:597403134378:web:32b2a3dc50a0ab89b463d3",
+  // PASTE YOUR LINK BELOW
+  databaseURL: "https://everest-8848-6233d-default-rtdb.europe-west1.firebasedatabase.app" 
+};
+
+// Initialize
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
         document.getElementById('reservationForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
-            btn.innerText = "Sparar...";
+            btn.innerText = "...";
 
             const booking = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
-                date: dateInput.value,
-                time: timeSelect.value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
                 guests: document.getElementById('guests').value,
                 requests: document.getElementById('special_requests').value,
                 timestamp: Date.now()
             };
 
-            // Spara till Firebase
-            db.ref('reservations').push(booking)
-                .then(() => {
+            if (db) {
+                db.ref('reservations').push(booking).then(() => {
                     document.getElementById('bookingFormView').classList.add('hidden');
                     document.getElementById('successView').classList.remove('hidden');
-                    
-                    document.getElementById('confirmName').innerText = booking.name;
-                    document.getElementById('confirmDate').innerText = booking.date;
-                    document.getElementById('confirmTime').innerText = booking.time;
-                    document.getElementById('confirmGuests').innerText = booking.guests;
-                    window.scrollTo(0,0);
-                })
-                .catch(err => {
-                    alert("Ett fel uppstod: " + err.message);
-                    btn.disabled = false;
-                    btn.innerText = "Bekräfta Bokning";
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
+            } else {
+                // Simulerat skickande om Firebase inte är konfigurerat än
+                setTimeout(() => {
+                    document.getElementById('bookingFormView').classList.add('hidden');
+                    document.getElementById('successView').classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 1000);
+            }
         });
+
+        lucide.createIcons();
+        document.getElementById('year').textContent = new Date().getFullYear();
+        const dateInput = document.getElementById('date');
+        if (dateInput) dateInput.min = new Date().toISOString().split('T')[0];
+        updateUI();
     </script>
 </body>
 </html>
